@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AI Automation &amp; Agents | BeAIReadyCo</title>
+<meta name="description" content="BeAIReadyCo builds AI automations and agents that handle follow-ups, intake, reporting, research and routine admin, while you stay in charge.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: same family as /mia and /websites. Hero with a live "workflow run" panel, then what we automate, how it works, guardrails, FAQ, contact. */
+:root{
+  --accent:#3563e9; --accent-ink:#fff; --violet:#7a3fe0; --human:#f29a1f; --good:#18a35a; --teal:#0e9fa0;
+  --bg:#fbfcfe; --tint:#f1f5ff; --surface:#fff; --fg:#172036; --muted:#5b6680; --line:#e2e7f2; --line2:#c9d2e4;
+  --grad:linear-gradient(100deg,#7a3fe0 0%,#4b35e0 45%,#2f6bf2 100%);
+  --font:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r:22px; --max:1180px; --shadow:0 1px 2px rgba(23,32,54,.04),0 12px 32px -16px rgba(23,32,54,.18);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,ol{margin:0;padding:0}
+ul,ol{list-style:none}
+a{color:inherit}
+img{max-width:100%}
+:focus-visible{outline:3px solid #9db3f5;outline-offset:3px;border-radius:10px}
+.wrap{max-width:var(--max);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+section{padding-block:clamp(56px,8vw,100px)}
+.tint{background:var(--tint)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:14px;font-weight:650;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,#fff);margin-bottom:18px}
+.h1{font-size:clamp(38px,5.6vw,64px);line-height:1.05;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.h2{font-size:clamp(28px,3.6vw,42px);line-height:1.12;letter-spacing:-.02em;font-weight:800;text-wrap:balance;max-width:24ch}
+.h3{font-size:19px;line-height:1.3;font-weight:750}
+.lede{font-size:clamp(17px,1.6vw,20px);color:var(--muted);max-width:58ch;margin-top:16px}
+.head{margin-bottom:clamp(28px,4vw,44px)}
+.head.center{text-align:center}.head.center .h2,.head.center .lede{margin-inline:auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;font-family:inherit;transition:transform .2s,box-shadow .2s}
+.btn-p{background:var(--accent);color:#fff;box-shadow:0 10px 24px -10px var(--accent)}
+.btn-p:hover{transform:translateY(-2px)}
+.btn-g{background:#fff;color:var(--fg);border-color:var(--line2)}
+.btn-g:hover{border-color:var(--accent);color:var(--accent)}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:clamp(20px,3vw,30px);box-shadow:var(--shadow);min-width:0}
+
+/* site chrome */
+.bsc-h{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.bsc-w{max-width:var(--max);margin:0 auto;padding:12px clamp(16px,4vw,40px);display:flex;align-items:center;gap:16px}
+.bsc-h a,.bsc-f a{text-decoration:none}
+.bsc-b{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.02em;white-space:nowrap}
+.bsc-b img{width:40px;height:auto}
+.bsc-n{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.bsc-n a{font-weight:600;font-size:15px;color:var(--muted);padding:8px 12px;border-radius:8px}
+.bsc-n a:hover{background:var(--tint);color:var(--fg)}
+.bsc-c{display:inline-flex;align-items:center;padding:10px 18px;border-radius:999px;background:var(--accent);color:#fff!important;font-weight:700;font-size:15px;white-space:nowrap}
+.bsc-f{background:#121630;color:#e9ebf7}
+.bsc-f .bsc-w{flex-wrap:wrap;justify-content:space-between;padding-block:32px;gap:12px 24px;font-size:15px}
+.bsc-f a:hover{color:#3fd0bf}.bsc-f span{color:#a3a9c6}
+@media(max-width:760px){.bsc-n{display:none}}
+
+/* hero */
+.hero{background:radial-gradient(55% 70% at 85% 35%,color-mix(in srgb,#7a3fe0 13%,transparent),transparent 70%),radial-gradient(45% 60% at 5% 95%,color-mix(in srgb,#2f6bf2 10%,transparent),transparent 70%),var(--bg);padding-block:clamp(44px,7vw,92px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-top:24px;font-size:15px;font-weight:600;max-width:480px}
+.facts li{display:flex;align-items:center;gap:8px}
+.facts svg{flex:none;width:22px;height:22px;padding:3px;border-radius:50%;background:color-mix(in srgb,var(--accent) 12%,#fff);color:var(--accent)}
+
+/* run panel */
+.run{background:var(--surface);border:1px solid var(--line);border-radius:26px;box-shadow:0 40px 70px -36px rgba(30,30,80,.45),0 2px 6px rgba(23,32,54,.06);overflow:hidden}
+.run-top{display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--grad);color:#fff}
+.run-top strong{font-size:15px}
+.run-top .live{margin-left:auto;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.2)}
+.run-top .live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#5ef59a;margin-right:6px;animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.2}}
+.picker{display:flex;gap:6px;flex-wrap:wrap;padding:14px 18px 0}
+.picker button{font:inherit;font-size:14px;font-weight:650;padding:7px 14px;border-radius:999px;border:1.5px solid var(--line2);background:#fff;color:var(--fg);cursor:pointer}
+.picker button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.trigger{margin:14px 18px 4px;padding:12px 14px;border-radius:14px;background:var(--tint);font-size:14.5px}
+.trigger b{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.steps{padding:6px 18px 4px;display:grid;gap:0}
+.step{display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:start;padding:9px 0;position:relative;font-size:14.5px;color:#9aa2b5;transition:color .35s}
+.step:not(:last-child)::after{content:"";position:absolute;left:14px;top:34px;bottom:-6px;width:2px;background:var(--line)}
+.step .dot{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:#f1f3f8;color:#9aa2b5;transition:all .35s;position:relative;z-index:1}
+.step .dot svg{width:16px;height:16px}
+.step strong{display:block;color:#9aa2b5;font-size:14.5px;transition:color .35s}
+.step .t{font-family:var(--mono);font-size:11px;padding-top:6px;white-space:nowrap}
+.step.on,.step.done{color:var(--muted)}
+.step.on strong,.step.done strong{color:var(--fg)}
+.step.done .dot{background:color-mix(in srgb,var(--good) 14%,#fff);color:var(--good)}
+.step.on .dot{background:var(--accent);color:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+.step.you .dot{background:color-mix(in srgb,var(--human) 16%,#fff);color:var(--human)}
+.step.you.on .dot{background:var(--human);color:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--human) 22%,transparent)}
+.step.you strong{color:#c7882e}.step.you.on strong,.step.you.done strong{color:#8a5300}
+.result{margin:6px 18px 18px;padding:12px 14px;border-radius:14px;font-size:14.5px;font-weight:650;background:#e7f7ee;color:#12753f;display:flex;gap:10px;align-items:center;opacity:.35;transition:opacity .4s}
+.result.show{opacity:1}
+.run-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.run-foot button{font:inherit;font-weight:700;color:var(--accent);background:none;border:0;cursor:pointer;padding:6px 8px;border-radius:8px}
+.run-foot button:hover{background:var(--tint)}
+
+/* grids */
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;margin-bottom:14px}
+.ico svg{width:22px;height:22px}
+.card p{color:var(--muted);margin-top:8px;font-size:15.5px}
+.eg{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.eg span{font-size:13px;font-weight:650;padding:4px 10px;border-radius:999px;background:var(--tint);color:var(--fg)}
+
+/* compare */
+.cmp h3{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.cmp li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:15.5px;border-bottom:1px dashed var(--line)}
+.cmp li:last-child{border-bottom:0}
+.cmp li svg{flex:none;width:18px;height:18px;margin-top:4px}
+.cmp.bad li svg{color:#c24747}.cmp.good li svg{color:var(--good)}
+.cmp.good{border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+
+/* how */
+.how{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;counter-reset:n}
+.how li{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);min-width:0}
+.how .n{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--accent)}
+.how h3{margin:6px 0}
+.how p{color:var(--muted);font-size:15px}
+
+/* guardrails */
+.guard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:40px;align-items:center}
+.glist{display:grid;gap:12px}
+.glist li{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:16px;background:#fff;border:1px solid var(--line)}
+.glist li .b{flex:none;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--human) 14%,#fff);color:var(--human)}
+.glist li .b svg{width:18px;height:18px}
+.glist strong{display:block}
+.glist p{color:var(--muted);font-size:15px}
+
+/* faq */
+.faq{max-width:820px;margin:0 auto;display:grid;gap:10px}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:4px 20px}
+.faq summary{cursor:pointer;font-weight:700;padding:14px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:22px;line-height:1;color:var(--accent)}
+.faq details[open] summary::after{content:"–"}
+.faq p{color:var(--muted);padding-bottom:16px}
+
+/* contact */
+.cta{border-radius:32px;padding:clamp(28px,5vw,64px);color:#fff;background:radial-gradient(60% 80% at 15% 10%,rgba(122,63,224,.85),transparent 70%),radial-gradient(60% 80% at 90% 100%,rgba(47,107,242,.8),transparent 70%),#4b35e0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:start}
+.cta .h2{color:#fff}
+.cta .lede{color:rgba(255,255,255,.9)}
+.cta .btn-p{background:#fff;color:var(--accent)}
+.form{background:#fff;color:var(--fg);border-radius:22px;padding:22px;display:grid;gap:12px}
+.form label{display:grid;gap:6px;font-size:14.5px;font-weight:650}
+.form input,.form textarea{font:inherit;font-size:16px;padding:11px 13px;border-radius:12px;border:1.5px solid var(--line2);background:#fff;color:var(--fg);width:100%}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}
+.form textarea{min-height:96px;resize:vertical}
+.form .chips{display:flex;flex-wrap:wrap;gap:6px}
+.form .chips label{display:inline-flex;flex-direction:row;align-items:center;gap:6px;font-weight:600;font-size:13.5px;padding:6px 10px;border:1.5px solid var(--line2);border-radius:999px;cursor:pointer}
+.form .chips input{width:auto;margin:0;accent-color:var(--accent)}
+.form .chips label:has(input:checked){border-color:var(--accent);background:var(--tint)}
+.form .msg{font-size:14px;font-weight:650}
+.form .msg.ok{color:#12753f}.form .msg.err{color:#c13a3a}
+.form button[disabled]{opacity:.6;cursor:wait}
+.small{font-size:13px;color:var(--muted)}
+
+@media(max-width:900px){
+  .hero-grid,.guard,.cta{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr 1fr}
+  .how{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .grid3,.grid2,.how{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr}
+  .step{grid-template-columns:30px 1fr}
+  .step .t{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="bsc-h"><div class="bsc-w"><a class="bsc-b" href="/"><img src="/favicon.png" alt="" width="40" height="36">BeAIReadyCo</a><nav class="bsc-n" aria-label="Main"><a href="/">Home</a><a href="/#business">Business</a><a href="/#school">AI School</a><a href="/#studio">Creative Studio</a></nav><a class="bsc-c" href="https://calendly.com/mpinhas100/30min" target="_blank" rel="noopener">Book a call</a></div></header>
+
+<main>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="pill">AI Automation &amp; Agents by BeAIReadyCo</span>
+      <h1 class="h1">Let AI handle the <span class="grad">busywork.</span> You run the business.</h1>
+      <p class="lede">We build AI automations and agents that take care of repetitive tasks: follow-ups, intake, reporting, research and routine admin. Your team gets hours back for the work that actually needs a person.</p>
+      <div class="ctas">
+        <a class="btn btn-p" href="#contact">Find what to automate</a>
+        <a class="btn btn-g" href="https://calendly.com/mpinhas100/30min" target="_blank" rel="noopener">Book a free call</a>
+      </div>
+      <ul class="facts">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Works with tools you already use</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>You approve anything important</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Start with one workflow</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Plain-language training included</li>
+      </ul>
+    </div>
+
+    <div class="run" aria-label="Example of an automation running">
+      <div class="run-top"><strong>Example workflow</strong><span class="live">Running</span></div>
+      <div class="picker" role="group" aria-label="Choose an example">
+        <button type="button" data-flow="lead" aria-pressed="true">New lead</button>
+        <button type="button" data-flow="report" aria-pressed="false">Weekly report</button>
+        <button type="button" data-flow="invoice" aria-pressed="false">Paperwork</button>
+      </div>
+      <div class="trigger" id="trigger"></div>
+      <ol class="steps" id="steps"></ol>
+      <div class="result" id="result"></div>
+      <div class="run-foot"><span>An illustration, not live data</span><button type="button" id="replay">Replay</button></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head"><h2 class="h2">What we automate</h2><p class="lede">If someone on your team does it the same way every week, there's a good chance AI can do most of it.</p></div>
+    <div class="grid3">
+      <div class="card"><div class="ico" style="background:color-mix(in srgb,var(--accent) 12%,#fff);color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></div><h3 class="h3">Client follow-up &amp; intake</h3><p>Every inquiry gets a fast, friendly reply, the right questions, and a clean record in your system.</p><div class="eg"><span>Lead replies</span><span>Intake forms</span><span>Reminders</span></div></div>
+      <div class="card"><div class="ico" style="background:color-mix(in srgb,var(--violet) 12%,#fff);color:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></div><h3 class="h3">Documents &amp; knowledge</h3><p>Pull details out of PDFs, emails and forms, file them, and answer staff questions from your own documents.</p><div class="eg"><span>Data entry</span><span>Summaries</span><span>Internal Q&amp;A</span></div></div>
+      <div class="card"><div class="ico" style="background:color-mix(in srgb,var(--teal) 12%,#fff);color:var(--teal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div><h3 class="h3">Reporting</h3><p>Weekly numbers gathered from your tools and turned into a short summary that lands in your inbox.</p><div class="eg"><span>KPI digests</span><span>Sales recaps</span><span>Alerts</span></div></div>
+      <div class="card"><div class="ico" style="background:color-mix(in srgb,var(--human) 14%,#fff);color:#c7771a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div><h3 class="h3">Research</h3><p>Agents that look up prospects, competitors or suppliers and hand you a tidy brief instead of twenty open tabs.</p><div class="eg"><span>Prospect briefs</span><span>Market scans</span></div></div>
+      <div class="card"><div class="ico" style="background:color-mix(in srgb,var(--good) 12%,#fff);color:var(--good)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div><h3 class="h3">Content &amp; operations</h3><p>Drafts of posts, emails and listings in your voice, ready for you to approve, plus the hand-offs between them.</p><div class="eg"><span>First drafts</span><span>Repurposing</span><span>Hand-offs</span></div></div>
+      <div class="card"><div class="ico" style="background:color-mix(in srgb,#e2498f 12%,#fff);color:#c2409b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><h3 class="h3">Recurring admin</h3><p>Scheduling, status updates, invoice chasing and the dozen small tasks that eat a Friday afternoon.</p><div class="eg"><span>Scheduling</span><span>Invoices</span><span>Status updates</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="tint">
+  <div class="wrap">
+    <div class="head center"><h2 class="h2">Automation vs. an AI agent</h2><p class="lede">You'll usually want a mix. We'll recommend whichever is simplest for the job.</p></div>
+    <div class="grid2">
+      <div class="card cmp good"><h3 class="h3">Automation</h3><p style="margin-top:0;margin-bottom:10px">Follows the same steps every time. Fast, predictable, and cheap to run.</p><ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>"When a form comes in, add it to the sheet and send a welcome email"</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>Best for clear rules and repeat tasks</li></ul></div>
+      <div class="card cmp good"><h3 class="h3">AI agent</h3><p style="margin-top:0;margin-bottom:10px">Reads, decides and takes the next step, checking with you when it matters.</p><ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>"Read new inquiries, sort them, draft replies and flag the urgent ones"</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>Best when every case is a little different</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head"><h2 class="h2">How it works</h2><p class="lede">We start small, prove it saves time, then build on it.</p></div>
+    <ol class="how">
+      <li><span class="n">Step 1</span><h3 class="h3">Map one workflow</h3><p>On a free call, we pick the task that costs you the most time each week.</p></li>
+      <li><span class="n">Step 2</span><h3 class="h3">Build &amp; connect</h3><p>We set it up with your email, calendar, forms, spreadsheets and CRM.</p></li>
+      <li><span class="n">Step 3</span><h3 class="h3">Test with you</h3><p>It runs alongside your team first, so you can check every result before it goes live.</p></li>
+      <li><span class="n">Step 4</span><h3 class="h3">Train &amp; improve</h3><p>Your team learns how it works, and we tune it as your business changes.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="tint">
+  <div class="wrap guard">
+    <div>
+      <h2 class="h2">AI does the work. You stay in charge.</h2>
+      <p class="lede">Good automation is built with guardrails. Nothing goes out to a customer, and no money moves, without the checks you choose.</p>
+    </div>
+    <ul class="glist">
+      <li><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span><strong>Approval steps where they matter</strong><p>You decide which actions need a quick yes from you first.</p></span></li>
+      <li><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span><strong>Only the access it needs</strong><p>Each automation connects only to the accounts and data its job requires.</p></span></li>
+      <li><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span><span><strong>A clear record</strong><p>See what ran, when, and what it did, so nothing happens in the dark.</p></span></li>
+      <li><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><span><strong>Easy to pause</strong><p>Turn any automation off in one step whenever you want.</p></span></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head center"><h2 class="h2">Questions people ask</h2></div>
+    <div class="faq">
+      <details><summary>Do I need to be technical?</summary><p>No. We handle the setup and explain everything in plain language. You just tell us how the work gets done today.</p></details>
+      <details><summary>Will it work with the tools we already use?</summary><p>Usually, yes. Most automations connect to common tools like Gmail, Outlook, Google Sheets, calendars, forms and popular CRMs. We'll confirm on our first call.</p></details>
+      <details><summary>Where should we start?</summary><p>With one task your team repeats every week and doesn't enjoy. A quick win builds confidence before you automate anything bigger.</p></details>
+      <details><summary>What if the AI gets something wrong?</summary><p>That's why we test with you first and add approval steps for anything customer-facing or important. You stay in control, and we tune it based on what you see.</p></details>
+      <details><summary>Will AI replace my team?</summary><p>The goal is to take the repetitive work off their plate so they can focus on customers, decisions and the work that needs a person.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta">
+      <div>
+        <h2 class="h2">Tell us what eats up your week</h2>
+        <p class="lede">Share a task or two, and we'll come back with ideas for what to automate first. Or skip the form and book a free 30-minute call.</p>
+        <div class="ctas"><a class="btn btn-p" href="https://calendly.com/mpinhas100/30min" target="_blank" rel="noopener">Book a free call</a></div>
+        <p class="small" style="color:rgba(255,255,255,.8);margin-top:18px">Prefer email? <strong style="user-select:all">BeAIReadyCo@gmail.com</strong></p>
+      </div>
+      <form class="form" id="form" novalidate>
+        <label for="f-name">Your name<input id="f-name" name="name" autocomplete="name" required></label>
+        <label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+        <label for="f-biz">Business (optional)<input id="f-biz" name="business" autocomplete="organization"></label>
+        <div><div style="font-size:14.5px;font-weight:650;margin-bottom:6px">What takes the most time?</div>
+          <div class="chips">
+            <label><input type="checkbox" name="areas" value="Follow-ups & intake">Follow-ups &amp; intake</label>
+            <label><input type="checkbox" name="areas" value="Documents & data entry">Documents &amp; data entry</label>
+            <label><input type="checkbox" name="areas" value="Reporting">Reporting</label>
+            <label><input type="checkbox" name="areas" value="Research">Research</label>
+            <label><input type="checkbox" name="areas" value="Content">Content</label>
+            <label><input type="checkbox" name="areas" value="Scheduling & admin">Scheduling &amp; admin</label>
+          </div></div>
+        <label for="f-task">Describe one task you'd love to hand off<textarea id="f-task" name="task" placeholder="e.g. Every Monday I copy orders from email into a spreadsheet and send a summary to my partner."></textarea></label>
+        <button class="btn btn-p" type="submit" id="f-send" style="background:var(--accent);color:#fff">Send</button>
+        <p class="msg" id="f-msg" role="status"></p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="bsc-f"><div class="bsc-w"><a class="bsc-b" href="/"><img src="/favicon.png" alt="" width="40" height="36">BeAIReadyCo</a><span>BeAIReadyCo@gmail.com</span><a href="/#business">Business Consulting</a><a href="/">Back to home</a><span>© 2026 BeAIReadyCo</span></div></footer>
+
+<script>
+(function(){
+  var I={
+    mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+    brain:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>',
+    sheet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>',
+    cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+    you:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+    chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>',
+    doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>',
+    check:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>'
+  };
+  var FLOWS={
+    lead:{trigger:"A new inquiry arrives through your website form",steps:[
+      ["mail","Reads the message","Pulls out name, need and timeline","0:02"],
+      ["brain","Sorts and scores it","Marks it as a hot lead","0:04"],
+      ["sheet","Adds it to your CRM","Creates the contact and notes","0:06"],
+      ["you","You approve the reply","One tap to send the drafted email","you"],
+      ["cal","Books the call","Sends a link and a reminder","0:09"]],
+      result:"Lead answered in minutes, not days"},
+    report:{trigger:"Every Monday at 8:00 AM",steps:[
+      ["sheet","Gathers last week's numbers","Sales, bookings and site visits","0:03"],
+      ["chart","Compares to the week before","Spots what went up or down","0:05"],
+      ["brain","Writes a short summary","Three takeaways in plain English","0:08"],
+      ["mail","Emails it to you","With the full table attached","0:09"]],
+      result:"Your weekly report, ready before coffee"},
+    invoice:{trigger:"A supplier invoice lands in your inbox",steps:[
+      ["doc","Reads the PDF","Finds vendor, amount and due date","0:02"],
+      ["sheet","Logs it in your tracker","No more copy and paste","0:04"],
+      ["brain","Checks for problems","Flags duplicates or odd amounts","0:06"],
+      ["you","You approve payment","Nothing is paid without your OK","you"],
+      ["cal","Sets a reminder","Before the due date","0:08"]],
+      result:"Paperwork filed and tracked automatically"}
+  };
+  var cur="lead",timers=[];
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function draw(){
+    timers.forEach(clearTimeout);timers=[];
+    var f=FLOWS[cur];
+    document.getElementById('trigger').innerHTML='<b>When</b>'+esc(f.trigger);
+    var ol=document.getElementById('steps');
+    ol.innerHTML=f.steps.map(function(s){var you=s[3]==="you";return '<li class="step'+(you?' you':'')+'"><span class="dot">'+I[s[0]]+'</span><span><strong>'+esc(s[1])+'</strong>'+esc(s[2])+'</span><span class="t">'+(you?'you':esc(s[3]))+'</span></li>'}).join('');
+    var res=document.getElementById('result');res.innerHTML=I.check+'<span>'+esc(f.result)+'</span>';res.classList.remove('show');
+    var items=ol.querySelectorAll('.step');
+    if(reduce){items.forEach(function(li){li.classList.add('done')});res.classList.add('show');return}
+    items.forEach(function(li,i){
+      timers.push(setTimeout(function(){if(i>0)items[i-1].classList.replace('on','done');li.classList.add('on')},600+i*1100));
+    });
+    timers.push(setTimeout(function(){items[items.length-1].classList.replace('on','done');res.classList.add('show')},600+items.length*1100));
+  }
+  document.querySelectorAll('.picker button').forEach(function(b){b.addEventListener('click',function(){cur=b.dataset.flow;document.querySelectorAll('.picker button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});draw()})});
+  document.getElementById('replay').addEventListener('click',draw);
+  draw();
+
+  var form=document.getElementById('form'),msg=document.getElementById('f-msg'),btn=document.getElementById('f-send');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var $=function(id){return document.getElementById(id).value.trim()};var name=$('f-name'),email=$('f-email');
+    if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.className='msg err';msg.textContent='Please add your name and a valid email so we can reply.';return}
+    var areas=[].slice.call(form.querySelectorAll('input[name=areas]:checked')).map(function(i){return i.value}).join(', ');
+    btn.disabled=true;btn.textContent='Sending…';msg.textContent='';
+    fetch('https://formsubmit.co/ajax/beaireadyco@gmail.com',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({_subject:'AI Automation inquiry from '+name,_template:'table',name:name,email:email,business:$('f-biz'),areas:areas||'(none selected)',task:$('f-task'),page:'AI Automation & Agents'})})
+    .then(function(r){return r.json().catch(function(){return{}}).then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
+    .then(function(){form.reset();msg.className='msg ok';msg.textContent='Thanks! We got your message and will reply within one business day.'})
+    .catch(function(){msg.className='msg err';msg.textContent="That didn't send. Please email BeAIReadyCo@gmail.com or book a call instead."})
+    .finally(function(){btn.disabled=false;btn.textContent='Send'});
+  });
+})();
+</script>
+</body>
+</html>

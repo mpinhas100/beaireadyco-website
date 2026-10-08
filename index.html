@@ -237,6 +237,7 @@ const DEF={
   marketing:"/ai-marketing/",
   mia:"/mia/",
   websites:"/websites/",
+  automation:"/automation/",
   instagram:"https://www.instagram.com/beaireadyco",
   email:"BeAIReadyCo@gmail.com"
  },
@@ -297,7 +298,7 @@ const DEF={
  }
 };
 const SVC=["voice","websites","automation","strategy","training"];
-const LINK_LABELS={calendly:"Booking link (Calendly)",newsletter:"Newsletter signup",quiz:"AI Quiz Center",bootcamp:"Free AI BootCamp for Kids",starterkit:"Free starter kit for parents",gamma:"Business guide (Gamma)",marketing:"AI Marketing page",mia:"Meet Mia page",websites:"Website Design page",instagram:"Instagram",email:"Email address"};
+const LINK_LABELS={calendly:"Booking link (Calendly)",newsletter:"Newsletter signup",quiz:"AI Quiz Center",bootcamp:"Free AI BootCamp for Kids",starterkit:"Free starter kit for parents",gamma:"Business guide (Gamma)",marketing:"AI Marketing page",mia:"Meet Mia page",websites:"Website Design page",automation:"AI Automation page",instagram:"Instagram",email:"Email address"};
 
 let saved={};
 try{ saved=JSON.parse(document.getElementById('site-data').textContent||'{}'); }catch(e){ saved={}; }
@@ -363,7 +364,7 @@ function business(){
   return `<div class="wrap">${crumbs(`<span>/</span>${T("biz_h")}`)}
     <div class="page-hero"><div>${T("biz_eyebrow","span","eyebrow")}${T("biz_h","h1")}${T("biz_lede","p","lede")}</div><div class="ctas"><a class="btn btn-primary" ${EXT("calendly")}>${T("biz_cta")}</a></div></div>
     <div class="section-head" style="margin-top:44px;margin-bottom:20px"><h2 style="font-size:1.9rem" data-t="biz_svc_h">${esc(D.t.biz_svc_h)}</h2>${T("biz_svc_p","p")}</div>
-    <div class="svc">${SVC.map(s=>`<a ${s==="voice"?EXT("mia"):s==="websites"?EXT("websites"):`href="#${s}"`}><h3>${T("sv_"+s+"_title")}</h3>${T("sv_"+s+"_card","p")}</a>`).join("")}
+    <div class="svc">${SVC.map(s=>`<a ${s==="voice"?EXT("mia"):s==="websites"?EXT("websites"):s==="automation"?EXT("automation"):`href="#${s}"`}><h3>${T("sv_"+s+"_title")}</h3>${T("sv_"+s+"_card","p")}</a>`).join("")}
       <a ${EXT("marketing")}><h3>${T("mkt_title")} ${T("mkt_ext","span","ext")}</h3>${T("mkt_card","p")}</a></div>
     <div class="panel" style="margin-bottom:24px">${T("biz_who_h","h3")}${L("biz_who","who-list")}</div>
     <div class="band">${T("biz_band_h","h2")}<a class="btn" ${EXT("calendly")}>${T("biz_band_cta")}</a></div>
