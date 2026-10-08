@@ -243,7 +243,7 @@ const DEF={
   email:"BeAIReadyCo@gmail.com"
  },
  t:{
-  nav_home:"Home",nav_business:"Business",nav_school:"AI School",nav_studio:"Creative Studio",nav_contact:"Contact",nav_cta:"Book a call",
+  nav_home:"Home",nav_business:"Business",nav_school:"AI School",nav_studio:"Creative Studio",nav_contact:"Contact",nav_faq:"FAQ",nav_cta:"Book a call",
   hero_eyebrow:"AI consulting · education · creative",hero_a:"Be",hero_b:"AI-Ready.",hero_sub:"No AI confusion. Simple execution.",
   hero_lede:"AI made practical and powerful. For smarter businesses, confident learners, and creators who want to bring ideas to life, with real-world results.",
   hero_cta1:"Book a free consultation",hero_cta2:"See what we do",demo_caption:"what working with us looks like",demo_you:"You",
@@ -333,7 +333,7 @@ function nav(){
   return `<header class="nav"><div class="wrap">
     <a class="brand" href="#home" aria-label="BeAIReadyCo home"><img class="logo-mark" src="${LOGO_SM}" alt="" width="46" height="42"><span class="wordmark">BeAIReadyCo</span></a>
     <nav class="links" id="links" aria-label="Main">
-      <a href="#home" data-nav="home">${T("nav_home")}</a><a href="#business" data-nav="business">${T("nav_business")}</a><a href="#school" data-nav="school">${T("nav_school")}</a><a href="#studio" data-nav="studio">${T("nav_studio")}</a><a href="#contact" data-nav="contact">${T("nav_contact")}</a>
+      <a href="#home" data-nav="home">${T("nav_home")}</a><a href="#business" data-nav="business">${T("nav_business")}</a><a href="#school" data-nav="school">${T("nav_school")}</a><a href="#studio" data-nav="studio">${T("nav_studio")}</a><a href="#contact" data-nav="contact">${T("nav_contact")}</a><a href="/faq/" data-nav="faq">${T("nav_faq")}</a>
     </nav>
     <div style="display:flex;gap:8px;align-items:center"><a class="btn btn-primary btn-sm" ${EXT("calendly")}>${T("nav_cta")}</a><button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="links">Menu</button></div>
   </div></header>`;
@@ -402,7 +402,7 @@ function studio(){
 function footer(){
   return `<footer><div class="wrap"><div class="foot">
     <div><a class="brand" href="#home"><img class="logo-mark" src="${LOGO_SM}" alt="" width="46" height="42">BeAIReadyCo</a>${T("foot_tag","p","ft")}<p style="margin-top:14px"><a ${EXT("instagram")}>Instagram ↗</a></p></div>
-    <div>${T("foot_explore","h4")}<ul><li><a href="#home">${T("nav_home")}</a></li><li><a href="#business">${T("biz_h")}</a></li><li><a href="#school">${T("school_h")}</a></li><li><a href="#studio">${T("studio_h")}</a></li></ul></div>
+    <div>${T("foot_explore","h4")}<ul><li><a href="#home">${T("nav_home")}</a></li><li><a href="#business">${T("biz_h")}</a></li><li><a href="#school">${T("school_h")}</a></li><li><a href="#studio">${T("studio_h")}</a></li><li><a href="/faq/">${T("nav_faq")}</a></li></ul></div>
     <div id="contact">${T("foot_touch","h4")}<ul><li class="email"><code id="em">${esc(D.links.email)}</code><button class="copy" id="copyBtn" type="button">Copy</button></li><li><a ${EXT("calendly")}>${T("foot_call")}</a></li></ul></div>
     <div>${T("foot_stay","h4")}${T("foot_stay_p","p","fsp")}<a class="btn btn-primary" ${EXT("newsletter")}>${T("foot_sub")}</a></div>
   </div><div class="legal">${T("foot_copy")}${T("foot_tagline")}</div></div></footer>`;
