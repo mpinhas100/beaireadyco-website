@@ -57,7 +57,7 @@ p{margin:0}
 
 /* hero */
 .hero{padding-block:72px 64px}
-.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,46rem);gap:56px;align-items:center}
 .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);display:inline-flex;gap:8px;align-items:center}
 .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--teal)}
 .hero h1{font-size:clamp(3rem,7vw,5.4rem);font-weight:800;margin-top:18px}
@@ -342,9 +342,6 @@ function home(){
   return `<section class="hero"><div class="wrap">
     <div>${T("hero_eyebrow","span","eyebrow")}<h1>${T("hero_a")} <em data-t="hero_b">${esc(D.t.hero_b)}</em></h1>${T("hero_sub","p","sub")}${T("hero_lede","p","lede")}
       <div class="ctas"><a class="btn btn-primary" ${EXT("calendly")}>${T("hero_cta1")}</a><a class="btn btn-ghost" href="#services">${T("hero_cta2")}</a></div></div>
-    <div class="console"><div class="console-bar"><span></span><span></span><span></span><small data-t="demo_caption">${esc(D.t.demo_caption)}</small></div>
-      <div class="tabs" role="tablist">${["biz","learn","create"].map(k=>`<button class="tab" role="tab" type="button" aria-selected="${demo===k}" data-demo="${k}">${T("demo_"+k+"_tab")}</button>`).join("")}</div>
-      <div class="convo" id="convo">${demoHTML()}</div></div>
   </div></section>
   <section class="block" id="services" style="padding-top:24px"><div class="wrap">
     <div class="section-head">${T("paths_h","h2")}${T("paths_p","p")}</div>
