@@ -234,8 +234,8 @@ const DEF={
   bootcamp:"https://beaireadyco.kit.com/freebootcamp",
   starterkit:"https://beaireadyco.kit.com/starterkit",
   gamma:"https://gamma.app/embed/iztefcigc3ow4gl",
-  marketing:"https://beaireadyco.com/ai-marketing/",
-  mia:"https://beaireadyco.com/mia/",
+  marketing:"/ai-marketing/",
+  mia:"/mia/",
   instagram:"https://www.instagram.com/beaireadyco",
   email:"BeAIReadyCo@gmail.com"
  },
@@ -306,8 +306,10 @@ let editing=false, canEdit=false, artifactApi=null, showLinks=false, demo="biz",
 
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const T=(k,tag="span",cls="")=>`<${tag}${cls?` class="${cls}"`:""} data-t="${k}">${esc(D.t[k])}</${tag}>`;
-const H=k=>esc(D.links[k]);
-const EXT=k=>/^https:\/\/(www\.)?beaireadyco\.com\//.test(D.links[k])?`href="${H(k)}"`:`href="${H(k)}" target="_blank" rel="noopener"`;
+const ONSITE=/(^|\.)beaireadyco\.com$|github\.io$/.test(location.hostname);
+const URL_=k=>{const v=D.links[k]||"";return v.startsWith("/")&&!ONSITE?"https://www.beaireadyco.com"+v:v;};
+const H=k=>esc(URL_(k));
+const EXT=k=>(/^\//.test(D.links[k]||"")||/^https?:\/\/(www\.)?beaireadyco\.com\//.test(D.links[k]))?`href="${H(k)}"`:`href="${H(k)}" target="_blank" rel="noopener"`;
 const ARROW='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 function L(k,cls="checks"){
   const items=D.lists[k]||[];
