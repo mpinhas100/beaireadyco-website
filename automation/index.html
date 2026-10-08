@@ -160,6 +160,37 @@ section{padding-block:clamp(56px,8vw,100px)}
 .form button[disabled]{opacity:.6;cursor:wait}
 .small{font-size:13px;color:var(--muted)}
 
+/* circular how-it-works */
+.cycle{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px) minmax(0,1fr);grid-template-rows:auto auto auto;gap:18px 28px;align-items:center;max-width:1040px;margin:0 auto}
+.ring{grid-column:2;grid-row:2;position:relative;width:100%;aspect-ratio:1;max-width:400px}
+.ring svg{width:100%;height:100%;display:block;overflow:visible}
+.ring .track{fill:none;stroke:#dfe5f3;stroke-width:2;stroke-dasharray:3 7;stroke-linecap:round}
+.ring .arc{fill:none;stroke:#3563e9;stroke-width:3;stroke-linecap:round;opacity:.85}
+.ring .bdg circle{fill:#fff;stroke:#c9d2e4;stroke-width:2;transition:fill .3s,stroke .3s}
+.ring .bdg text{text-anchor:middle;font:800 17px var(--font);fill:#3563e9;transition:fill .3s}
+.ring .bdg.on circle{fill:#3563e9;stroke:#3563e9}
+.ring .bdg.on text{fill:#fff}
+.ring .mover{fill:#7a3fe0;filter:drop-shadow(0 0 6px rgba(122,63,224,.6))}
+.hub{position:absolute;inset:26%;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff,#f1f5ff);border:1px solid var(--line);box-shadow:var(--shadow);display:grid;place-content:center;text-align:center;padding:12px;gap:6px}
+.hub strong{font-size:clamp(15px,1.7vw,19px);line-height:1.2;letter-spacing:-.01em}
+.hub span{font-size:13px;color:var(--muted);line-height:1.35}
+.cyc-list{display:contents}
+.cyc-card{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow);max-width:340px;transition:border-color .3s,transform .3s,background-color .3s;min-width:0}
+.cyc-card .n{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.cyc-card h3{margin:4px 0 6px}
+.cyc-card p{color:var(--muted);font-size:15px}
+.cyc-card.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,#fff);transform:translateY(-2px)}
+.cyc-card.s1{grid-column:2;grid-row:1;justify-self:center;text-align:center}
+.cyc-card.s2{grid-column:3;grid-row:2;justify-self:start}
+.cyc-card.s3{grid-column:2;grid-row:3;justify-self:center;text-align:center}
+.cyc-card.s4{grid-column:1;grid-row:2;justify-self:end;text-align:right}
+@media(max-width:860px){
+  .cycle{grid-template-columns:1fr;grid-template-rows:none}
+  .ring{grid-column:1;grid-row:auto;max-width:300px;justify-self:center}
+  .cyc-card.s1,.cyc-card.s2,.cyc-card.s3,.cyc-card.s4{grid-column:1;grid-row:auto;justify-self:stretch;text-align:left;max-width:none}
+}
+@media(prefers-reduced-motion:reduce){.ring .mover{display:none}}
+
 @media(max-width:900px){
   .hero-grid,.guard,.cta{grid-template-columns:1fr}
   .grid3{grid-template-columns:1fr 1fr}
@@ -243,12 +274,16 @@ section{padding-block:clamp(56px,8vw,100px)}
 <section>
   <div class="wrap">
     <div class="head"><h2 class="h2">How it works</h2><p class="lede">We start small, prove it saves time, then build on it.</p></div>
-    <ol class="how">
-      <li><span class="n">Step 1</span><h3 class="h3">Map one workflow</h3><p>On a free call, we pick the task that costs you the most time each week.</p></li>
-      <li><span class="n">Step 2</span><h3 class="h3">Build &amp; connect</h3><p>We set it up with your email, calendar, forms, spreadsheets and CRM.</p></li>
-      <li><span class="n">Step 3</span><h3 class="h3">Test with you</h3><p>It runs alongside your team first, so you can check every result before it goes live.</p></li>
-      <li><span class="n">Step 4</span><h3 class="h3">Train &amp; improve</h3><p>Your team learns how it works, and we tune it as your business changes.</p></li>
-    </ol>
+    <div class="cycle">
+      <div class="ring" aria-hidden="true">
+        <svg viewBox="0 0 400 400"><defs><marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3563e9"/></marker></defs>
+          <circle class="track" cx="200" cy="200" r="170"/><path class="arc" d="M246.9,36.6 A170,170 0 0,1 363.4,153.1" marker-end="url(#ah)"/><path class="arc" d="M363.4,246.9 A170,170 0 0,1 246.9,363.4" marker-end="url(#ah)"/><path class="arc" d="M153.1,363.4 A170,170 0 0,1 36.6,246.9" marker-end="url(#ah)"/><path class="arc" d="M36.6,153.1 A170,170 0 0,1 153.1,36.6" marker-end="url(#ah)"/><g class="bdg" data-i="0"><circle cx="200" cy="30" r="22"/><text x="200" y="30" dy="0.35em">1</text></g><g class="bdg" data-i="1"><circle cx="370" cy="200" r="22"/><text x="370" y="200" dy="0.35em">2</text></g><g class="bdg" data-i="2"><circle cx="200" cy="370" r="22"/><text x="200" y="370" dy="0.35em">3</text></g><g class="bdg" data-i="3"><circle cx="30" cy="200" r="22"/><text x="30" y="200" dy="0.35em">4</text></g>
+          <circle class="mover" r="7"><animateMotion dur="8s" repeatCount="indefinite" path="M200,30 A170,170 0 1,1 199.9,30"/></circle>
+        </svg>
+        <div class="hub"><strong>Start small.<br>Then build on it.</strong><span>Each round frees up more of your week.</span></div>
+      </div>
+      <ol class="cyc-list"><li class="cyc-card s1" data-i="0" tabindex="0"><span class="n">Step 1</span><h3 class="h3">Map one workflow</h3><p>On a free call, we pick the task that costs you the most time each week.</p></li><li class="cyc-card s2" data-i="1" tabindex="0"><span class="n">Step 2</span><h3 class="h3">Build &amp; connect</h3><p>We set it up with your email, calendar, forms, spreadsheets and CRM.</p></li><li class="cyc-card s3" data-i="2" tabindex="0"><span class="n">Step 3</span><h3 class="h3">Test with you</h3><p>It runs alongside your team first, so you can check every result before it goes live.</p></li><li class="cyc-card s4" data-i="3" tabindex="0"><span class="n">Step 4</span><h3 class="h3">Train &amp; improve</h3><p>Your team learns how it works, and we tune it as your business changes. Then we pick the next workflow.</p></li></ol>
+    </div>
   </div>
 </section>
 
@@ -366,6 +401,11 @@ section{padding-block:clamp(56px,8vw,100px)}
   }
   document.querySelectorAll('.picker button').forEach(function(b){b.addEventListener('click',function(){cur=b.dataset.flow;document.querySelectorAll('.picker button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});draw()})});
   document.getElementById('replay').addEventListener('click',draw);
+  (function(){var cards=document.querySelectorAll('.cyc-card'),b=document.querySelectorAll('.ring .bdg'),i=0,hold=false;
+    function set(n){cards.forEach(function(c,k){c.classList.toggle('on',k===n)});b.forEach(function(c,k){c.classList.toggle('on',k===n)})}
+    cards.forEach(function(c,k){['mouseenter','focus'].forEach(function(ev){c.addEventListener(ev,function(){hold=true;set(k)})});['mouseleave','blur'].forEach(function(ev){c.addEventListener(ev,function(){hold=false})})});
+    set(0);if(!reduce)setInterval(function(){if(!hold){i=(i+1)%4;set(i)}},2000);})();
+
   draw();
 
   var form=document.getElementById('form'),msg=document.getElementById('f-msg'),btn=document.getElementById('f-send');
