@@ -325,7 +325,7 @@ const DEF={
  }
 };
 const SVC=["voice","websites","automation","strategy","training"];
-const LINK_LABELS={calendly:"Booking link (Calendly)",newsletter:"Newsletter signup",quiz:"AI Quiz Center",bootcamp:"Free AI BootCamp for Kids",starterkit:"Free starter kit for parents",gamma:"Business guide (Gamma)",marketing:"AI Marketing page",mia:"Meet Mia page",websites:"Website Design page",automation:"AI Automation page",training:"AI Training page",school:"AI School page",instagram:"Instagram",email:"Email address"};
+const LINK_LABELS={calendly:"Booking link (Calendly)",newsletter:"Newsletter signup",quiz:"AI Quiz Center",gamma:"Business guide (Gamma)",marketing:"AI Marketing page",mia:"Meet Mia page",websites:"Website Design page",automation:"AI Automation page",training:"AI Training page",school:"AI School page",instagram:"Instagram",email:"Email address"};
 
 let saved={};
 try{ saved=JSON.parse(document.getElementById('site-data').textContent||'{}'); }catch(e){ saved={}; }
@@ -413,10 +413,9 @@ function school(){
         <a class="quiz-cta" href="/ai-classes-for-kids/"><span class="qi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/></svg></span><span><strong>AI classes for kids</strong><small>Ages 8+, what kids learn, and free resources</small></span></a>
         <a class="quiz-cta" ${EXT("quiz")}><span class="qi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span>${T("quiz_h","strong")}${T("quiz_p","small")}</span></a>
         <a class="btn btn-primary" ${EXT("calendly")}>${T("school_cta")}</a>
-        <a class="btn btn-ghost" ${EXT("bootcamp")}>${T("school_cta2")}</a>
       </div></div>
     <div class="grid2"><div class="panel">${T("school_cur_h","h3")}${L("school_cur")}</div><div class="panel">${T("school_ages_h","h3")}${L("school_ages","who-list")}</div></div>
-    <div class="band mb">${T("school_band_h","h2")}<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" ${EXT("calendly")}>${T("school_band_cta")}</a><a class="btn btn-outline" ${EXT("starterkit")}>${T("school_band_cta2")}</a></div></div>
+    <div class="band mb">${T("school_band_h","h2")}<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" ${EXT("calendly")}>${T("school_band_cta")}</a></div></div>
   </div>`;
 }
 function studio(){
