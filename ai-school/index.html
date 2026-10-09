@@ -184,12 +184,14 @@ section{padding-block:clamp(56px,8vw,100px)}
 @media(max-width:900px){.ldx-grid{grid-template-columns:1fr}.age{grid-template-columns:1fr 1fr}.svcs{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.age,.svcs,.why,.free{grid-template-columns:1fr}}
 
+.img-left{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+.img-left .hero-img{order:-1}
 .hero-img{margin:0;justify-self:center;width:100%;max-width:420px}
 .hero-img img{display:block;width:100%;height:auto;border-radius:28px;box-shadow:0 40px 70px -30px rgba(40,30,120,.55)}
 .ways .plist{grid-template-columns:repeat(4,minmax(0,1fr))}
 .ways .plist .e{background:var(--tint)}
 .ways .plist li{flex-direction:column;background:#fff;border:1px solid var(--line);padding:18px}
-@media(max-width:900px){.ways .plist{grid-template-columns:1fr 1fr}.hero-img{max-width:360px}}
+@media(max-width:900px){.img-left{grid-template-columns:1fr}.ways .plist{grid-template-columns:1fr 1fr}.hero-img{max-width:360px}}
 @media(max-width:600px){.ways .plist{grid-template-columns:1fr}}
 .qcard{display:flex;gap:14px;align-items:center;margin-top:26px;padding:14px 18px;border-radius:18px;background:#fff;border:1.5px solid color-mix(in srgb,var(--accent) 35%,var(--line));text-decoration:none;color:var(--fg);max-width:520px;transition:border-color .2s,transform .2s,box-shadow .2s}
 .qcard:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
@@ -231,7 +233,7 @@ section{padding-block:clamp(56px,8vw,100px)}
 <header class="bsc-h"><div class="bsc-w"><a class="bsc-b" href="/"><img src="/favicon.png" alt="" width="40" height="36">BeAIReadyCo</a><nav class="bsc-n" aria-label="Main"><a href="/">Home</a><a href="/#business">Business</a><a href="/ai-school/">AI School</a><a href="/#studio">Creative Studio</a><a href="/#contact">Contact</a><a href="/faq/">FAQ</a></nav><a class="bsc-c" href="https://calendly.com/mpinhas100/30min" target="_blank" rel="noopener">Book a call</a></div></header>
 <main>
 
-<section class="ldx-hero"><div class="wrap ldx-grid">
+<section class="ldx-hero"><div class="wrap ldx-grid img-left">
   <div>
     <span class="pill">AI School · Ages 8 to adult · In person &amp; online</span>
     <h1 class="h1">AI School: learn AI the <span class="grad">smart, safe way.</span></h1>
