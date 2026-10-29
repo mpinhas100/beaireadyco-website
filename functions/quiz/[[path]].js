@@ -12,7 +12,7 @@ export async function onRequest(context) {
     const probe = await fetch(target.origin + "/", { redirect: "manual" });
     const hs = {};
     probe.headers.forEach((v, k) => (hs[k] = v));
-    const body = (await probe.text()).slice(0, 400);
+    const body = (await probe.text()).slice(0, 3000);
     return new Response(JSON.stringify({ status: probe.status, headers: hs, body }, null, 2), {
       headers: { "content-type": "application/json" },
     });
