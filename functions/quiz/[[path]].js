@@ -21,6 +21,9 @@ export async function onRequest(context) {
   });
 
   const responseHeaders = new Headers(upstream.headers);
+  // fetch() already decoded the body, so drop the encoding headers that describe the original bytes.
+  responseHeaders.delete("content-encoding");
+  responseHeaders.delete("content-length");
   const location = responseHeaders.get("location");
   if (location) {
     responseHeaders.set("location", location.replace(UPSTREAM, PUBLIC_BASE));
