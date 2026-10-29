@@ -1,0 +1,2 @@
+/quiz  https://quiz-forge-99.preview.emergentagent.com  200
+/quiz/*  https://quiz-forge-99.preview.emergentagent.com/:splat  200
