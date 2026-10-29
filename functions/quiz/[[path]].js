@@ -8,6 +8,16 @@ export async function onRequest(context) {
   const rest = incoming.pathname.replace(/^\/quiz/, "") || "/";
   const target = new URL(rest + incoming.search, UPSTREAM);
 
+  if (rest === "/__debug") {
+    const probe = await fetch(target.origin + "/", { redirect: "manual" });
+    const hs = {};
+    probe.headers.forEach((v, k) => (hs[k] = v));
+    const body = (await probe.text()).slice(0, 400);
+    return new Response(JSON.stringify({ status: probe.status, headers: hs, body }, null, 2), {
+      headers: { "content-type": "application/json" },
+    });
+  }
+
   const headers = new Headers(context.request.headers);
   headers.set("host", target.host);
   headers.delete("cf-connecting-ip");
