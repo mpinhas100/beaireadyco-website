@@ -9,7 +9,7 @@ export async function onRequest(context) {
   const target = new URL(rest + incoming.search, UPSTREAM);
 
   if (rest === "/__debug") {
-    const probe = await fetch(target.origin + "/", { redirect: "manual" });
+    const probe = await fetch("https://app.emergent.sh/loading-preview?host=quiz-forge-99.preview.emergentagent.com", { redirect: "manual" });
     const hs = {};
     probe.headers.forEach((v, k) => (hs[k] = v));
     const body = (await probe.text()).slice(0, 3000);
