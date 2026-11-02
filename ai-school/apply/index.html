@@ -12,8 +12,7 @@
 <meta property="og:image" content="https://www.beaireadyco.com/images/ai-school-what-is-ai.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
 /* Layout: same family as /mia and /websites. Hero with a live "workflow run" panel, then what we automate, how it works, guardrails, FAQ, contact. */
 :root{
@@ -307,6 +306,7 @@ section{padding-block:clamp(56px,8vw,100px)}
       <div class="fld full"><label for="a-kids">Your experience working with kids <i>*</i></label><textarea id="a-kids" required placeholder="Tutoring, student teaching, camp, coaching, babysitting…"></textarea></div>
       <div class="fld full"><label for="a-why">Why do you want to teach AI literacy? <i>*</i></label><textarea id="a-why" required></textarea></div>
       <div class="fld full"><label for="a-link">Résumé or LinkedIn link <span style="font-weight:500;color:var(--muted)">(optional)</span></label><input id="a-link" type="url" placeholder="https://"></div>
+      <div class="fld full"><label class="agree"><input id="a-adult" type="checkbox" required><span>I am 18 or older. <i style="color:#c0392b;font-style:normal">*</i></span></label></div>
       <div class="fld full"><label class="agree"><input id="a-bg" type="checkbox" required><span>I'm willing to complete a background check and fingerprinting, which NYC schools require. <i style="color:#c0392b;font-style:normal">*</i></span></label></div>
     </div>
     <button class="btn btn-p" type="submit" id="a-send">Submit application</button>
@@ -322,16 +322,16 @@ section{padding-block:clamp(56px,8vw,100px)}
     var avail=[].slice.call(f.querySelectorAll('input[name=avail]:checked')).map(function(i){return i.value});
     var need=['a-name','a-phone','a-boro','a-school','a-major','a-grad','a-ai','a-kids','a-why'];
     var missing=need.filter(function(id){return !v(id)});
-    if(missing.length||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('a-email'))||!avail.length||!document.getElementById('a-bg').checked){
-      msg.className='fmsg err';msg.textContent='Please fill in all required fields (*), pick your availability and check the background-check box.';
-      var first=document.getElementById(missing[0]||(!/@/.test(v('a-email'))?'a-email':'a-bg'));if(first)first.focus();return}
+    if(missing.length||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('a-email'))||!avail.length||!document.getElementById('a-bg').checked||!document.getElementById('a-adult').checked){
+      msg.className='fmsg err';msg.textContent='Please fill in all required fields (*), pick your availability, confirm you are 18 or older and check the background-check box.';
+      var first=document.getElementById(missing[0]||(!/@/.test(v('a-email'))?'a-email':(!document.getElementById('a-adult').checked?'a-adult':'a-bg')));if(first)first.focus();return}
     if(f.querySelector('.hp').value)return;
     btn.disabled=true;btn.textContent='Sending…';msg.textContent='';
     fetch('https://formsubmit.co/ajax/beaireadyco@gmail.com',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
       body:JSON.stringify({_subject:'AI Education Fellow application: '+v('a-name'),_template:'table',_replyto:v('a-email'),
         position:'AI Education Fellow',name:v('a-name'),email:v('a-email'),phone:v('a-phone'),lives_in:v('a-boro'),
         college:v('a-school'),major:v('a-major'),graduation:v('a-grad'),ai_experience:v('a-ai'),availability:avail.join(', '),
-        experience_with_kids:v('a-kids'),why_ai_literacy:v('a-why'),resume_or_linkedin:v('a-link')||'(none)',background_check:'Yes, willing'})})
+        experience_with_kids:v('a-kids'),why_ai_literacy:v('a-why'),resume_or_linkedin:v('a-link')||'(none)',background_check:'Yes, willing',age_18_or_older:'Yes'})})
     .then(function(r){return r.json().catch(function(){return{}}).then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
     .then(function(){f.reset();msg.className='fmsg ok';msg.textContent='Thank you! Your application was sent. We\'ll be in touch soon.'})
     .catch(function(){msg.className='fmsg err';msg.textContent="That didn't send. Please email your details to BeAIReadyCo@gmail.com."})
