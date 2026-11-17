@@ -23,7 +23,10 @@ html :is(.btn,.bsc-c,.bai-btn,.menu-btn,.learn-more,.quiz-cta,.bai-qz__opt,.web-
 html :is(.path,.svcs a.card,.tiles a.card,.bai-how__step):active:active{transform:scale(.985)}
 .bsc-b,.brand{-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:reduce){html :is(.btn,.bsc-c,.bai-btn,.menu-btn,.learn-more,.quiz-cta,.bai-qz__opt,.web-toggle,.path,.svcs a.card,.tiles a.card,.bai-how__step):active:active{transform:none}}
+html.rv-on .rv{opacity:0;transform:translateY(22px)}
+html.rv-on .rv.rv-in{opacity:1;transform:none;transition:opacity .55s cubic-bezier(.23,1,.32,1) var(--rv-d,0ms),transform .7s cubic-bezier(.23,1,.32,1) var(--rv-d,0ms)}
 </style>
+<script src="/reveal.js" defer></script>
 </head><body>
 <title>Web Design for Small Businesses | BeAIReadyCo</title>
 <link rel="stylesheet" href="/fonts/fonts.css">
