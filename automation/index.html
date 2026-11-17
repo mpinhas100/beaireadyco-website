@@ -81,7 +81,7 @@ section{padding-block:clamp(56px,8vw,100px)}
 .steps{padding:6px 18px 4px;display:grid;gap:0}
 .step{display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:start;padding:9px 0;position:relative;font-size:14.5px;color:#687083;transition:color .35s}
 .step:not(:last-child)::after{content:"";position:absolute;left:14px;top:34px;bottom:-6px;width:2px;background:var(--line)}
-.step .dot{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:#f1f3f8;color:#687083;transition:all .35s;position:relative;z-index:1}
+.step .dot{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:#f1f3f8;color:#687083;transition:background-color .35s,color .35s,border-color .35s,transform .35s;position:relative;z-index:1}
 .step .dot svg{width:16px;height:16px}
 .step strong{display:block;color:#687083;font-size:14.5px;transition:color .35s}
 .step .t{font-family:var(--mono);font-size:11px;padding-top:6px;white-space:nowrap}
@@ -216,6 +216,19 @@ section{padding-block:clamp(56px,8vw,100px)}
 .bai-logo .d{transform-box:fill-box;transform-origin:50% 100%}
 </style>
 <script>try{if(!(matchMedia("(prefers-reduced-motion: reduce)").matches)&&!sessionStorage.getItem("baiLogo")){sessionStorage.setItem("baiLogo","1");document.documentElement.classList.add("bai-anim")}}catch(e){}</script>
+<style id="bai-motion-css">
+/* Motion polish (motion-polish skill): press feedback, hover lifts only for mouse users */
+:root{--ease-out:cubic-bezier(.23,1,.32,1)}
+:is(.btn,.bsc-c,.bai-btn,.menu-btn,.learn-more,.quiz-cta,.bai-qz__opt,.web-toggle){transition-property:transform,background-color,border-color,color,box-shadow;transition-duration:160ms;transition-timing-function:var(--ease-out)}
+:is(.path,.svcs a.card,.tiles a.card,.bai-how__step){transition-property:transform,border-color,box-shadow;transition-duration:200ms;transition-timing-function:var(--ease-out)}
+@media (hover:none),(pointer:coarse){
+ :is(.btn,.btn-p,.bai-btn,.path,.svcs a.card,.tiles a.card,.bai-how__step,.bai-btn--primary):hover:not(:active){transform:none}
+}
+html :is(.btn,.bsc-c,.bai-btn,.menu-btn,.learn-more,.quiz-cta,.bai-qz__opt,.web-toggle):active:active{transform:scale(.97)}
+html :is(.path,.svcs a.card,.tiles a.card,.bai-how__step):active:active{transform:scale(.985)}
+.bsc-b,.brand{-webkit-tap-highlight-color:transparent}
+@media (prefers-reduced-motion:reduce){html :is(.btn,.bsc-c,.bai-btn,.menu-btn,.learn-more,.quiz-cta,.bai-qz__opt,.web-toggle,.path,.svcs a.card,.tiles a.card,.bai-how__step):active:active{transform:none}}
+</style>
 </head>
 <body>
 

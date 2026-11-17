@@ -21,6 +21,19 @@
  .bai-hero .d{animation:baiDrop .8s 1.3s both}
 }
 </style>
+<style id="bai-motion-css">
+/* Motion polish (motion-polish skill): press feedback, hover lifts only for mouse users */
+:root{--ease-out:cubic-bezier(.23,1,.32,1)}
+:is(.btn,.bsc-c,.bai-btn,.menu-btn,.learn-more,.quiz-cta,.bai-qz__opt,.web-toggle){transition-property:transform,background-color,border-color,color,box-shadow;transition-duration:160ms;transition-timing-function:var(--ease-out)}
+:is(.path,.svcs a.card,.tiles a.card,.bai-how__step){transition-property:transform,border-color,box-shadow;transition-duration:200ms;transition-timing-function:var(--ease-out)}
+@media (hover:none),(pointer:coarse){
+ :is(.btn,.btn-p,.bai-btn,.path,.svcs a.card,.tiles a.card,.bai-how__step,.bai-btn--primary):hover:not(:active){transform:none}
+}
+html :is(.btn,.bsc-c,.bai-btn,.menu-btn,.learn-more,.quiz-cta,.bai-qz__opt,.web-toggle):active:active{transform:scale(.97)}
+html :is(.path,.svcs a.card,.tiles a.card,.bai-how__step):active:active{transform:scale(.985)}
+.bsc-b,.brand{-webkit-tap-highlight-color:transparent}
+@media (prefers-reduced-motion:reduce){html :is(.btn,.bsc-c,.bai-btn,.menu-btn,.learn-more,.quiz-cta,.bai-qz__opt,.web-toggle,.path,.svcs a.card,.tiles a.card,.bai-how__step):active:active{transform:none}}
+</style>
 </head><body><title>AI Consulting, Web Design &amp; AI Classes for Kids | BeAIReadyCo</title>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <style id="app-css">
