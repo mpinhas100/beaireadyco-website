@@ -55,7 +55,7 @@
   function setupReveals(main) {
     if (reduce || !canObserve) return;
     var sections = [].filter.call(main.querySelectorAll('section'), function (s) {
-      return !s.parentElement.closest('section');
+      return !s.parentElement.closest('section') && !s.classList.contains('scrolly');
     });
     if (sections.length < 2) return;
 
