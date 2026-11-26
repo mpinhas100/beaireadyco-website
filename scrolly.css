@@ -36,3 +36,22 @@
   .scrolly-cap.scrolly-final{display:block;position:static;opacity:1;transform:none}
   .scrolly-dots{display:none}
 }
+
+/* Computers: the video fills the screen; captions float in a frosted card over the wall, top right */
+@media (min-width:821px) and (prefers-reduced-motion:no-preference){
+  .scrolly-pin{display:block}
+  .scrolly-grid{position:relative;height:100%;max-width:none;padding:0;display:block}
+  .scrolly-stage{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;box-shadow:none;background:#ece9fb}
+  .scrolly-copy{position:absolute;z-index:2;top:clamp(20px,4vh,44px);right:clamp(20px,3vw,48px);width:min(400px,34vw);min-height:0;
+    padding:26px 28px 52px;border-radius:22px;background:rgba(255,255,255,.72);
+    -webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);
+    box-shadow:0 20px 50px -24px rgba(42,34,120,.35),inset 0 0 0 1px rgba(255,255,255,.6)}
+  .scrolly-cap{position:absolute;left:28px;right:28px;top:26px}
+  .scrolly-cap.on{position:relative;left:auto;right:auto;top:auto}
+  .scrolly-cap h2{font-size:clamp(1.7rem,2.6vw,2.4rem);color:#141a33}
+  .scrolly-cap p{font-size:1rem;color:#4a5170}
+  .scrolly-cap .k{color:#3c32b8}
+  .scrolly-dots{left:28px;bottom:22px}
+  .scrolly-dots span{background:rgba(20,26,51,.18)}
+  .scrolly-dots span.on{background:#4a3fd6}
+}

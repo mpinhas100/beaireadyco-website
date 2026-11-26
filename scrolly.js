@@ -41,7 +41,15 @@
     var small = window.innerWidth <= 820;
     var canvas = sec.querySelector('canvas');
     var ctx = canvas.getContext('2d');
-    if (small) { canvas.width = 640; canvas.height = 360; }
+    var full = !small && !reduce; // computers: full-screen, cropped to cover
+    function sizeCanvas() {
+      if (!full) { if (small) { canvas.width = 640; canvas.height = 360; } return; }
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+      var k = Math.min(1, 2400 / Math.max(w, 1));
+      canvas.width = Math.max(1, Math.round(w * k)); canvas.height = Math.max(1, Math.round(h * k));
+    }
+    sizeCanvas();
     var imgs = new Array(FRAMES), loaded = new Array(FRAMES);
     var capEls = sec.querySelectorAll('.scrolly-cap');
     var dotEls = sec.querySelectorAll('.scrolly-dots span');
@@ -73,7 +81,11 @@
       var f = nearestLoaded(want);
       if (f < 0 || f === current) return;
       current = f;
-      ctx.drawImage(imgs[f], 0, 0, canvas.width, canvas.height);
+      var im = imgs[f], cw = canvas.width, ch = canvas.height;
+      if (!full) { ctx.drawImage(im, 0, 0, cw, ch); return; }
+      var iw = im.naturalWidth, ih = im.naturalHeight, sc = Math.max(cw / iw, ch / ih);
+      var dw = iw * sc, dh = ih * sc;
+      ctx.drawImage(im, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
     }
     function progress() {
       var r = sec.getBoundingClientRect();
@@ -111,7 +123,7 @@
       new IntersectionObserver(function (es) { if (es[0].isIntersecting) loadAll(); }, { rootMargin: '150% 0px' }).observe(sec);
     } else { loadAll(); }
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', function () { sizeCanvas(); current = -1; onScroll(); });
     update();
   }
 
