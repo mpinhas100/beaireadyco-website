@@ -2,7 +2,7 @@
    the desk-cleanup animation forward and backward, frame by frame, with captions.
    Frames live in /scrolly/desk/ (d-001.webp... for computers, m-001.webp... for phones). */
 (function () {
-  var FRAMES = 120;
+  var FRAMES = 119;
   var DIR = '/scrolly/desk/';
   var BOOK = 'https://calendly.com/mpinhas100/30min';
   var CAPS = [
