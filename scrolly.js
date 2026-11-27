@@ -11,8 +11,6 @@
     { at: 0.50, k: 'Our Solution:', h: 'AI picks up the busywork.', p: 'Calls answered and follow-ups sent.<br>Emails sorted and answered.<br>Admin and scheduling handled in the background.' },
     { at: 0.85, k: 'The result', h: 'Be <span class="ai">AI</span>-Ready.', p: 'Less busywork, more room to grow your business.', cta: true }
   ];
-  var PHONE = window.innerWidth <= 820;
-  if (PHONE) { CAPS = CAPS.slice(1); CAPS[0] = Object.assign({}, CAPS[0], { at: 0 }); }
   var reduce = false;
   try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
 
@@ -145,8 +143,6 @@
     }
     sec.querySelector('.scrolly-pin').addEventListener('wheel', function (e) {
       if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || !e.deltaY) return;
-      var hq = sec.querySelector('.hq');
-      if (hq && hq.dataset.started && e.target.closest && e.target.closest('.scrolly-copy') && sec.querySelector('.scrolly-hero.on')) { e.preventDefault(); return; } // filling in the form: stay put
       var now = performance.now(), abs = Math.abs(e.deltaY);
       // A new scroll is either a pause in wheel events, or (on trackpads, whose flicks keep
       // "coasting" for a second or more) a sudden jump in speed while the coast is fading.
@@ -167,8 +163,7 @@
     update();
   }
 
-
-  // ---------- "What do you need?" form (replaces the hero's Book a free consultation button) ----------
+  // ---------- "What do you need?" form (opens from the button under the video) ----------
   var SERVICES = ['AI strategy & consulting', 'AI receptionist / voice & text AI', 'Website design', 'Automation & AI agents',
     'AI marketing', 'AI training for teams', 'AI classes for kids', 'Creative studio (videos & content)', 'Not sure yet'];
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -234,6 +229,26 @@
     return f;
   }
 
+  function buildBand() {
+    // a button under the video that opens the 3-question form in a window
+    var band = document.createElement('section');
+    band.className = 'hq-band';
+    band.innerHTML = '<div class="wrap"><div class="hq-band-in"><h2>Tell us what you need</h2>' +
+      '<p>Answer three quick questions and we\'ll get back to you.</p>' +
+      '<button type="button" class="btn btn-primary hq-open">Get started</button></div></div>' +
+      '<dialog class="hq-dlg" aria-labelledby="hq-title"><div class="hq-dlg-head"><h2 id="hq-title">Tell us what you need</h2>' +
+      '<button type="button" class="hq-x" aria-label="Close">&times;</button></div></dialog>';
+    var dlg = band.querySelector('dialog');
+    dlg.querySelector('.hq-dlg-head').after(buildForm());
+    band.querySelector('.hq-open').addEventListener('click', function () {
+      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+      var first = dlg.querySelector('.hq-step.on input'); if (first) first.focus();
+    });
+    dlg.querySelector('.hq-x').addEventListener('click', function () { dlg.close ? dlg.close() : dlg.removeAttribute('open'); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg && dlg.close) dlg.close(); }); // click outside closes
+    return band;
+  }
+
   function mount() {
     var app = document.getElementById('app');
     if (!app || document.body.classList.contains('editing')) return;
@@ -244,19 +259,10 @@
     // The video is the opening of the page: move the welcome content (logo, tagline, buttons)
     // into the first caption and put the video where the old opening section was.
     var content = hero.querySelector('.wrap > div');
-    if (content) {
-      var cta = content.querySelector('.ctas .btn-primary');
-      if (cta) cta.parentNode.parentNode.insertBefore(buildForm(), cta.parentNode), cta.remove();
-    }
-    if (PHONE) {
-      // phones: the welcome text and form stay on top as a normal section; the video follows
-      hero.classList.add('hq-hero');
-      hero.parentNode.insertBefore(sec, hero.nextSibling);
-    } else {
-      if (content) sec.querySelector('.scrolly-hero').appendChild(content);
-      hero.parentNode.insertBefore(sec, hero);
-      hero.hidden = true;
-    }
+    if (content) sec.querySelector('.scrolly-hero').appendChild(content);
+    hero.parentNode.insertBefore(sec, hero);
+    hero.hidden = true;
+    sec.parentNode.insertBefore(buildBand(), sec.nextSibling);
     wire(sec);
   }
 
