@@ -25,6 +25,7 @@
       if (c.hero) return '<div class="scrolly-cap scrolly-hero on" data-i="0"></div>';
       return '<div class="scrolly-cap' + (c.cta ? ' scrolly-final' : '') + (i === 0 ? ' on' : '') + '" data-i="' + i + '">' +
         '<span class="k">' + c.k + '</span><h2>' + c.h + '</h2><p>' + c.p + '</p>' +
+        (c.cta ? '<button type="button" class="btn btn-primary hq-open">Let\'s get you AI Ready!</button>' : '') +
         '</div>';
     }).join('');
     sec.innerHTML = '<div class="scrolly-pin"><div class="scrolly-grid">' +
@@ -228,24 +229,22 @@
     return f;
   }
 
-  function buildBand() {
-    // a button under the video that opens the 3-question form in a window
-    var band = document.createElement('section');
-    band.className = 'hq-band';
-    band.innerHTML = '<div class="wrap"><div class="hq-band-in"><h2>Let\'s get you AI Ready!</h2>' +
-      '<p>Answer three quick questions and we\'ll get back to you.</p>' +
-      '<button type="button" class="btn btn-primary hq-open">Book a free consultation</button></div></div>' +
-      '<dialog class="hq-dlg" aria-labelledby="hq-title"><div class="hq-dlg-head"><h2 id="hq-title">Tell us what you need</h2>' +
-      '<button type="button" class="hq-x" aria-label="Close">&times;</button></div></dialog>';
-    var dlg = band.querySelector('dialog');
-    dlg.querySelector('.hq-dlg-head').after(buildForm());
-    band.querySelector('.hq-open').addEventListener('click', function () {
-      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
-      var first = dlg.querySelector('.hq-step.on input'); if (first) first.focus();
+  function addFormWindow(sec) {
+    // the "Let's get you AI Ready!" button under the last message opens the 3-question form in a window
+    var dlg = document.createElement('dialog');
+    dlg.className = 'hq-dlg'; dlg.setAttribute('aria-labelledby', 'hq-title');
+    dlg.innerHTML = '<div class="hq-dlg-head"><h2 id="hq-title">Tell us what you need</h2>' +
+      '<button type="button" class="hq-x" aria-label="Close">&times;</button></div>';
+    dlg.appendChild(buildForm());
+    sec.appendChild(dlg);
+    [].forEach.call(sec.querySelectorAll('.hq-open'), function (btn) {
+      btn.addEventListener('click', function () {
+        if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+        var first = dlg.querySelector('.hq-step.on input'); if (first) first.focus();
+      });
     });
     dlg.querySelector('.hq-x').addEventListener('click', function () { dlg.close ? dlg.close() : dlg.removeAttribute('open'); });
     dlg.addEventListener('click', function (e) { if (e.target === dlg && dlg.close) dlg.close(); }); // click outside closes
-    return band;
   }
 
   function mount() {
@@ -265,7 +264,7 @@
     }
     hero.parentNode.insertBefore(sec, hero);
     hero.hidden = true;
-    sec.parentNode.insertBefore(buildBand(), sec.nextSibling);
+    addFormWindow(sec);
     wire(sec);
   }
 
