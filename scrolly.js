@@ -25,11 +25,11 @@
       if (c.hero) return '<div class="scrolly-cap scrolly-hero on" data-i="0"></div>';
       return '<div class="scrolly-cap' + (c.cta ? ' scrolly-final' : '') + (i === 0 ? ' on' : '') + '" data-i="' + i + '">' +
         '<span class="k">' + c.k + '</span><h2>' + c.h + '</h2><p>' + c.p + '</p>' +
-        (c.cta ? '<button type="button" class="btn btn-primary hq-open">Let\'s get you AI Ready!</button>' : '') +
         '</div>';
     }).join('');
     sec.innerHTML = '<div class="scrolly-pin"><div class="scrolly-grid">' +
-      '<div class="scrolly-copy">' + caps + '</div>' +
+      '<div class="scrolly-copy">' + caps +
+      '<button type="button" class="btn btn-primary hq-open">Let\'s get you AI Ready!</button></div>' +
       '<div class="scrolly-stage"><canvas width="1280" height="720" role="img" aria-label="A cluttered office desk is tidied up by a small glowing AI helper until it is calm and organized."></canvas>' +
       '<div class="scrolly-bar" aria-hidden="true"><i></i></div></div>' +
       '</div></div>';
@@ -159,6 +159,33 @@
       lastStep = now;
       glide(y, r[0] + target * span);
     }, { passive: false });
+    // Phones and tablets: one swipe moves the video to the next stop, so three swipes finish it
+    var pin = sec.querySelector('.scrolly-pin'), ty = null, tLock = false;
+    function nextStop(down) {
+      var r = range(), y = window.scrollY, span = Math.max(1, r[1] - r[0]);
+      if (y < r[0] - 2 || y > r[1] + 2) return null;
+      var p = (y - r[0]) / span;
+      if (down) { for (var i = 0; i < STOPS.length; i++) if (STOPS[i] > p + 0.02) return r[0] + STOPS[i] * span; }
+      else { for (var j = STOPS.length - 1; j >= 0; j--) if (STOPS[j] < p - 0.02) return r[0] + STOPS[j] * span; }
+      return null;
+    }
+    pin.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1 || (e.target.closest && e.target.closest('button,a,input,textarea,label'))) { ty = null; return; }
+      ty = e.touches[0].clientY; tLock = false;
+    }, { passive: true });
+    pin.addEventListener('touchmove', function (e) {
+      if (ty === null) return;
+      var dy = ty - e.touches[0].clientY;
+      if (!tLock && Math.abs(dy) < 6) return;
+      if (busy || nextStop(dy > 0) !== null) { tLock = true; e.preventDefault(); } // stay on the video; the swipe picks the next stop
+    }, { passive: false });
+    pin.addEventListener('touchend', function (e) {
+      if (ty === null || !tLock) { ty = null; return; }
+      var dy = ty - e.changedTouches[0].clientY; ty = null;
+      if (busy || Math.abs(dy) < 30) return;
+      var to = nextStop(dy > 0);
+      if (to !== null) glide(window.scrollY, to);
+    }, { passive: true });
     window.addEventListener('resize', function () { sizeCanvas(); current = -1; onScroll(); });
     update();
   }
