@@ -6,10 +6,11 @@
   var DIR = '/scrolly/desk/';
   var BOOK = 'https://calendly.com/mpinhas100/30min';
   var CAPS = [
-    { at: 0.00, k: 'A normal day', h: 'Sound familiar?', p: 'Phones ringing. Notes everywhere. An inbox that never ends.' },
-    { at: 0.22, k: 'Step 1', h: 'AI picks up the busywork.', p: 'Calls answered, follow-ups sent, nothing forgotten.' },
-    { at: 0.45, k: 'Step 2', h: 'Your inbox, under control.', p: 'Emails sorted and answered, so you can focus on clients.' },
-    { at: 0.66, k: 'Step 3', h: 'Paperwork, handled.', p: 'Admin and scheduling run quietly in the background.' },
+    { at: 0.00, hero: true },
+    { at: 0.14, k: 'A normal day', h: 'Sound familiar?', p: 'Phones ringing. Notes everywhere. An inbox that never ends.' },
+    { at: 0.32, k: 'Step 1', h: 'AI picks up the busywork.', p: 'Calls answered, follow-ups sent, nothing forgotten.' },
+    { at: 0.50, k: 'Step 2', h: 'Your inbox, under control.', p: 'Emails sorted and answered, so you can focus on clients.' },
+    { at: 0.68, k: 'Step 3', h: 'Paperwork, handled.', p: 'Admin and scheduling run quietly in the background.' },
     { at: 0.86, k: 'The result', h: 'Be <span class="ai">AI</span>-Ready.', p: 'Less busywork, more room to grow your business.', cta: true }
   ];
   var reduce = false;
@@ -23,6 +24,7 @@
     sec.className = 'scrolly';
     sec.setAttribute('aria-label', 'How AI turns a busy day into a calm one');
     var caps = CAPS.map(function (c, i) {
+      if (c.hero) return '<div class="scrolly-cap scrolly-hero on" data-i="0"></div>';
       return '<div class="scrolly-cap' + (c.cta ? ' scrolly-final' : '') + (i === 0 ? ' on' : '') + '" data-i="' + i + '">' +
         '<span class="k">' + c.k + '</span><h2>' + c.h + '</h2><p>' + c.p + '</p>' +
         (c.cta ? '<a class="btn btn-primary" href="' + BOOK + '" target="_blank" rel="noopener">Book a free consultation</a>' : '') +
@@ -134,7 +136,12 @@
     var hero = app.querySelector('section.hero');
     if (!hero) return;
     var sec = build();
-    hero.parentNode.insertBefore(sec, hero.nextSibling);
+    // The video is the opening of the page: move the welcome content (logo, tagline, buttons)
+    // into the first caption and put the video where the old opening section was.
+    var content = hero.querySelector('.wrap > div');
+    if (content) sec.querySelector('.scrolly-hero').appendChild(content);
+    hero.parentNode.insertBefore(sec, hero);
+    hero.hidden = true;
     wire(sec);
   }
 
