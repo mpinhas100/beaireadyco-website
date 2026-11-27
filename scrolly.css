@@ -147,3 +147,4 @@
   .scrolly-pin{height:auto;padding-bottom:20px}
   .scrolly-copy{min-height:0}
 }
+.section-head p:empty{display:none}

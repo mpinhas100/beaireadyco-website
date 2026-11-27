@@ -198,12 +198,20 @@
       '<button type="button" class="hq-x" aria-label="Close">&times;</button></div>';
     dlg.appendChild(buildForm());
     sec.appendChild(dlg);
-    [].forEach.call(sec.querySelectorAll('.hq-open'), function (btn) {
-      btn.addEventListener('click', function () {
-        if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
-        var first = dlg.querySelector('.hq-step.on input'); if (first) first.focus();
+    // the button at the bottom of the page opens the same form (its booking link stays as a fallback)
+    var closer = document.querySelector('#app .closer .btn-primary');
+    if (closer) closer.classList.add('hq-open');
+    if (!window.__hqOpen) {
+      window.__hqOpen = true;
+      document.addEventListener('click', function (e) {
+        var btn = e.target.closest && e.target.closest('.hq-open');
+        var d = document.querySelector('.hq-dlg');
+        if (!btn || !d) return;
+        e.preventDefault();
+        if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+        var first = d.querySelector('.hq-step.on input'); if (first) first.focus();
       });
-    });
+    }
     dlg.querySelector('.hq-x').addEventListener('click', function () { dlg.close ? dlg.close() : dlg.removeAttribute('open'); });
     dlg.addEventListener('click', function (e) { if (e.target === dlg && dlg.close) dlg.close(); }); // click outside closes
   }
