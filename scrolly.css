@@ -79,3 +79,6 @@
 @media (prefers-reduced-motion:reduce){ .scrolly-cap.scrolly-final{margin-top:28px} }
 
 .scrolly-dots{display:none!important}
+.scrolly{height:260vh}
+@media (max-width:820px){.scrolly{height:220vh}}
+@media (prefers-reduced-motion:reduce){.scrolly{height:auto}}

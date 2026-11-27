@@ -7,11 +7,9 @@
   var BOOK = 'https://calendly.com/mpinhas100/30min';
   var CAPS = [
     { at: 0.00, hero: true },
-    { at: 0.14, k: 'A normal day', h: 'Sound familiar?', p: 'Phones ringing. Notes everywhere. An inbox that never ends.' },
-    { at: 0.32, k: 'Our Solution:', h: 'AI picks up the busywork.', p: 'Calls answered, follow-ups sent, nothing forgotten.' },
-    { at: 0.50, k: 'Our Solution:', h: 'Your inbox, under control.', p: 'Emails sorted and answered, so you can focus on clients.' },
-    { at: 0.68, k: 'Our Solution:', h: 'Paperwork, handled.', p: 'Admin and scheduling run quietly in the background.' },
-    { at: 0.86, k: 'The result', h: 'Be <span class="ai">AI</span>-Ready.', p: 'Less busywork, more room to grow your business.', cta: true }
+    { at: 0.20, k: 'A normal day', h: 'Sound familiar?', p: 'Phones ringing. Notes everywhere. An inbox that never ends.' },
+    { at: 0.50, k: 'Our Solution:', h: 'AI picks up the busywork.', p: 'Calls answered and follow-ups sent.<br>Emails sorted and answered.<br>Admin and scheduling handled in the background.' },
+    { at: 0.85, k: 'The result', h: 'Be <span class="ai">AI</span>-Ready.', p: 'Less busywork, more room to grow your business.', cta: true }
   ];
   var reduce = false;
   try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
@@ -124,30 +122,38 @@
     } else { loadAll(); }
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Mouse wheel / trackpad over the video: the video plays at a steady pace and the page
-    // stays on it until the video reaches its end (or its start, scrolling up). A fast flick
-    // can't skip past it; after the end, a new scroll gesture moves on to the rest of the page.
-    var stage = full ? sec.querySelector('.scrolly-pin') : sec.querySelector('.scrolly-stage');
-    var hold = 0, holdTimer = 0, STEP = 45; // px of page scroll per wheel event, at most
+    // Mouse wheel / trackpad: three scrolls play the whole video. Each scroll gesture glides
+    // the video to the next stop (1/3, 2/3, end) and shows that stop's message; extra wheel
+    // events from the same flick are ignored. After the end, the next scroll moves on to the page.
+    var STOPS = [0, 1 / 3, 2 / 3, 1];
+    var busy = false, lastWheel = 0;
     function range() {
       var top = sec.getBoundingClientRect().top + window.scrollY - 68;
       return [top, top + sec.offsetHeight - (window.innerHeight - 68)];
     }
-    stage.addEventListener('wheel', function (e) {
-      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // pinch-zoom or sideways
-      var d = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
-      if (!d) return;
-      var r = range(), y = window.scrollY, inside = y >= r[0] - 2 && y <= r[1] + 2;
-      clearTimeout(holdTimer);
-      holdTimer = setTimeout(function () { hold = 0; }, 320);
-      if (hold && (hold > 0) === (d > 0)) { e.preventDefault(); return; } // same gesture hit an end: wait
-      if (!inside) return;
-      var atEnd = d > 0 ? y >= r[1] - 1 : y <= r[0] + 1;
-      if (atEnd) return; // fresh gesture at an end: let the page move on
+    function glide(from, to) {
+      busy = true;
+      var t0 = performance.now(), dur = 850;
+      (function step(now) {
+        var t = Math.min(1, (now - t0) / dur);
+        var e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; // ease in-out
+        window.scrollTo({ top: from + (to - from) * e, behavior: 'instant' });
+        if (t < 1) requestAnimationFrame(step); else busy = false;
+      })(t0);
+    }
+    sec.querySelector('.scrolly-pin').addEventListener('wheel', function (e) {
+      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || !e.deltaY) return;
+      var now = performance.now(), fresh = now - lastWheel > 220;
+      lastWheel = now;
+      var down = e.deltaY > 0, r = range(), y = window.scrollY, span = Math.max(1, r[1] - r[0]);
+      if (y < r[0] - 2 || y > r[1] + 2) return; // not on the video
+      if (busy || !fresh) { e.preventDefault(); return; } // still the same flick, or still gliding
+      var p = (y - r[0]) / span, target = null;
+      if (down) { for (var i = 0; i < STOPS.length; i++) if (STOPS[i] > p + 0.02) { target = STOPS[i]; break; } }
+      else { for (var j = STOPS.length - 1; j >= 0; j--) if (STOPS[j] < p - 0.02) { target = STOPS[j]; break; } }
+      if (target === null) return; // at an end: a new scroll moves on to the page
       e.preventDefault();
-      var next = Math.min(r[1], Math.max(r[0], y + Math.max(-STEP, Math.min(STEP, d))));
-      window.scrollTo({ top: next, behavior: 'instant' });
-      if (next >= r[1] - 1 || next <= r[0] + 1) hold = d > 0 ? 1 : -1;
+      glide(y, r[0] + target * span);
     }, { passive: false });
     window.addEventListener('resize', function () { sizeCanvas(); current = -1; onScroll(); });
     update();
