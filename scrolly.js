@@ -30,6 +30,7 @@
       '<div class="scrolly-stage"><video muted playsinline preload="auto" poster="' + DIR + (PHONE ? 'm-' : 'd-') + '001.webp" ' +
       'aria-label="A cluttered office desk is tidied up by a small glowing AI helper until it is calm and organized.">' +
       '<source src="/scrolly/' + (PHONE ? 'desk-m.mp4' : 'desk.mp4') + '" type="video/mp4"></video>' +
+      '<img class="scrolly-logo" src="/logo.png" alt="BeAIReadyCo logo" width="360" height="317">' +
       '<div class="scrolly-bar" aria-hidden="true"><i></i></div></div>' +
       '</div></div>';
     return sec;
