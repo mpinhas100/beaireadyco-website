@@ -193,6 +193,17 @@
   // ---------- "What do you need?" form (opens from the button under the video) ----------
   var SERVICES = ['AI strategy & consulting', 'AI receptionist / voice & text AI', 'Website design', 'Automation & AI agents',
     'AI marketing', 'AI training for teams', 'AI classes for kids', 'Creative studio (videos & content)', 'Not sure yet'];
+  var NEEDS = {
+    'AI strategy & consulting': ['Find where AI fits my business', 'Build a step-by-step AI plan', 'Choose the right AI tools'],
+    'AI receptionist / voice & text AI': ['Answer calls after hours', 'Text back missed calls', 'Book appointments automatically'],
+    'Website design': ['A new website', 'Redesign my current website', 'Online booking or payments'],
+    'Automation & AI agents': ['Automate follow-ups', 'Cut data entry and paperwork', 'Connect the apps I use'],
+    'AI marketing': ['Get more reviews', 'Social media content', 'Email campaigns to find clients'],
+    'AI training for teams': ['Train my team on ChatGPT or Copilot', 'A workshop for managers'],
+    'AI classes for kids': ['After-school program', 'Classes at my school', 'Library or community center program'],
+    'Creative studio (videos & content)': ['Promo or ad videos', 'Content for social media', 'Brand visuals'],
+    'Not sure yet': ['Save time on busywork', 'Get more clients', 'Learn what AI can do for me']
+  };
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function buildForm() {
     var f = document.createElement('form');
@@ -202,14 +213,16 @@
       '<div class="hq-chips" role="group" aria-labelledby="hq-q1">' + SERVICES.map(function (s, i) {
         return '<label><input type="checkbox" name="service" value="' + esc(s) + '">' + esc(s) + '</label>'; }).join('') + '</div>' +
       '<div class="hq-nav"><button type="button" class="btn btn-primary hq-next">Next</button></div></div>' +
-      '<div class="hq-step" data-s="2"><label class="hq-q" for="hq-need">What would you like help with?</label>' +
-      '<textarea id="hq-need" name="need" rows="3" placeholder="e.g. We miss calls after hours and want them answered and booked."></textarea>' +
+      '<div class="hq-step" data-s="2"><p class="hq-q" id="hq-q2">What would you like help with?</p>' +
+      '<div class="hq-chips hq-needs" role="group" aria-labelledby="hq-q2"></div>' +
+      '<label class="hq-l" for="hq-need">Anything else? <span>(optional)</span></label>' +
+      '<textarea id="hq-need" name="need" rows="2" placeholder="Tell us a little more"></textarea>' +
       '<label class="hq-l" for="hq-biz">Business or school name <span>(optional)</span></label><input id="hq-biz" name="business" autocomplete="organization">' +
       '<div class="hq-nav"><button type="button" class="hq-back">Back</button><button type="button" class="btn btn-primary hq-next">Next</button></div></div>' +
       '<div class="hq-step" data-s="3"><p class="hq-q">Where can we reach you?</p>' +
       '<label class="hq-l" for="hq-name">Your name</label><input id="hq-name" name="name" autocomplete="name" required>' +
       '<label class="hq-l" for="hq-email">Email</label><input id="hq-email" name="email" type="email" autocomplete="email" required>' +
-      '<label class="hq-l" for="hq-phone">Phone <span>(optional)</span></label><input id="hq-phone" name="phone" type="tel" autocomplete="tel">' +
+      '<label class="hq-l" for="hq-phone">Phone</label><input id="hq-phone" name="phone" type="tel" autocomplete="tel" required>' +
       '<input type="text" name="_honey" class="hq-hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
       '<div class="hq-nav"><button type="button" class="hq-back">Back</button><button type="submit" class="btn btn-primary hq-send">Send</button></div></div>' +
       '<p class="hq-msg" role="status" aria-live="polite"></p>' +
@@ -220,8 +233,20 @@
       [].forEach.call(f.querySelectorAll('.hq-step'), function (el) { el.classList.toggle('on', +el.dataset.s === n); });
       f.querySelector('.hq-step-n b').textContent = n;
       msg.textContent = ''; msg.className = 'hq-msg';
-      var first = f.querySelector('.hq-step.on input:not(.hq-hp), .hq-step.on textarea');
+      var first = f.querySelector('.hq-step.on input:not(.hq-hp)');
       if (n > 1 && first) first.focus({ preventScroll: true });
+    }
+    function needs() { return [].map.call(f.querySelectorAll('input[name=needopt]:checked'), function (i) { return i.value; }); }
+    function fillNeeds() {
+      // options for the services they picked, keeping any boxes already ticked
+      var keep = needs(), seen = {}, html = '';
+      picked().forEach(function (svc) {
+        (NEEDS[svc] || []).forEach(function (o) {
+          if (seen[o]) return; seen[o] = 1;
+          html += '<label><input type="checkbox" name="needopt" value="' + esc(o) + '"' + (keep.indexOf(o) > -1 ? ' checked' : '') + '>' + esc(o) + '</label>';
+        });
+      });
+      f.querySelector('.hq-needs').innerHTML = html;
     }
     function err(t) { msg.className = 'hq-msg err'; msg.textContent = t; }
     function picked() { return [].map.call(f.querySelectorAll('input[name=service]:checked'), function (i) { return i.value; }); }
@@ -230,6 +255,8 @@
     f.addEventListener('click', function (e) {
       if (e.target.closest('.hq-next')) {
         if (step === 1 && !picked().length) return err('Please pick at least one service.');
+        if (step === 1) fillNeeds();
+        if (step === 2 && !needs().length && !(f.elements.need.value || '').trim()) return err('Please pick at least one, or tell us in the box.');
         show(step + 1);
       } else if (e.target.closest('.hq-back')) show(step - 1);
     });
@@ -238,13 +265,14 @@
       if (step < 3) { f.querySelector('.hq-step.on .hq-next').click(); return; }
       var v = function (n) { return (f.elements[n].value || '').trim(); };
       if (!v('name') || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email'))) return err('Please add your name and a valid email so we can reply.');
+      if (v('phone').replace(/\D/g, '').length < 7) return err('Please add your phone number.');
       if (v('_honey')) return;
       var btn = f.querySelector('.hq-send'), services = picked().join(', ');
       btn.disabled = true; btn.textContent = 'Sending…'; msg.textContent = '';
       fetch('https://formsubmit.co/ajax/beaireadyco@gmail.com', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ _subject: 'Home page inquiry from ' + v('name') + ': ' + services, _template: 'table',
-          services: services, need: v('need') || '(not filled in)', business: v('business'), name: v('name'),
+          services: services, need: needs().join(', ') || '(none ticked)', more: v('need'), business: v('business'), name: v('name'),
           email: v('email'), phone: v('phone'), page: 'Home page' })
       }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || j.success === 'false' || j.success === false) throw 0; }); })
         .then(function () {
