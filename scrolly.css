@@ -149,8 +149,8 @@
 }
 .section-head p:empty{display:none}
 /* Brand logo in the video's top right corner */
-.scrolly-logo{position:absolute;z-index:3;top:12px;right:12px;width:64px;height:auto;filter:drop-shadow(0 6px 14px rgba(42,34,120,.25));pointer-events:none}
+.scrolly-logo{position:absolute;z-index:3;top:10px;right:10px;width:96px;height:auto;filter:drop-shadow(0 6px 14px rgba(42,34,120,.25));pointer-events:none}
 @media (min-width:821px) and (prefers-reduced-motion:no-preference){
-  .scrolly-logo{top:clamp(16px,3vh,28px);right:clamp(20px,3vw,48px);width:clamp(84px,8vw,120px)}
-  .scrolly-copy{top:calc(clamp(16px,3vh,28px) + clamp(84px,8vw,120px)*.88 + 14px)}
+  .scrolly-logo{top:clamp(16px,3vh,28px);right:clamp(20px,3vw,48px);width:clamp(130px,12vw,180px)}
+  .scrolly-copy{top:calc(clamp(16px,3vh,28px) + clamp(130px,12vw,180px)*.88 + 14px)}
 }
