@@ -25,7 +25,6 @@
       if (c.hero) return '<div class="scrolly-cap scrolly-hero on" data-i="0"></div>';
       return '<div class="scrolly-cap' + (c.cta ? ' scrolly-final' : '') + (i === 0 ? ' on' : '') + '" data-i="' + i + '">' +
         '<span class="k">' + c.k + '</span><h2>' + c.h + '</h2><p>' + c.p + '</p>' +
-        (c.cta ? '<a class="btn btn-primary" href="' + BOOK + '" target="_blank" rel="noopener">Book a free consultation</a>' : '') +
         '</div>';
     }).join('');
     sec.innerHTML = '<div class="scrolly-pin"><div class="scrolly-grid">' +
@@ -235,7 +234,7 @@
     band.className = 'hq-band';
     band.innerHTML = '<div class="wrap"><div class="hq-band-in"><h2>Tell us what you need</h2>' +
       '<p>Answer three quick questions and we\'ll get back to you.</p>' +
-      '<button type="button" class="btn btn-primary hq-open">Get started</button></div></div>' +
+      '<button type="button" class="btn btn-primary hq-open">Book a free consultation</button></div></div>' +
       '<dialog class="hq-dlg" aria-labelledby="hq-title"><div class="hq-dlg-head"><h2 id="hq-title">Tell us what you need</h2>' +
       '<button type="button" class="hq-x" aria-label="Close">&times;</button></div></dialog>';
     var dlg = band.querySelector('dialog');
@@ -259,7 +258,11 @@
     // The video is the opening of the page: move the welcome content (logo, tagline, buttons)
     // into the first caption and put the video where the old opening section was.
     var content = hero.querySelector('.wrap > div');
-    if (content) sec.querySelector('.scrolly-hero').appendChild(content);
+    if (content) {
+      var cta = content.querySelector('.ctas .btn-primary');
+      if (cta) cta.remove(); // the consultation button lives under the video now
+      sec.querySelector('.scrolly-hero').appendChild(content);
+    }
     hero.parentNode.insertBefore(sec, hero);
     hero.hidden = true;
     sec.parentNode.insertBefore(buildBand(), sec.nextSibling);
