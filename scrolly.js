@@ -259,8 +259,8 @@
     // into the first caption and put the video where the old opening section was.
     var content = hero.querySelector('.wrap > div');
     if (content) {
-      var cta = content.querySelector('.ctas .btn-primary');
-      if (cta) cta.remove(); // the consultation button lives under the video now
+      var ctas = content.querySelector('.ctas');
+      if (ctas) ctas.remove(); // no buttons on the video; the consultation button lives under it
       sec.querySelector('.scrolly-hero').appendChild(content);
     }
     hero.parentNode.insertBefore(sec, hero);
