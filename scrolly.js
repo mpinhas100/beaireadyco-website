@@ -1,8 +1,6 @@
-/* "From chaos to calm": a pinned section on the home page where scrolling plays
-   the desk-cleanup animation forward and backward, frame by frame, with captions.
-   Frames live in /scrolly/desk/ (d-001.webp... for computers, m-001.webp... for phones). */
+/* "From chaos to calm": the opening of the home page. The desk-cleanup video plays by itself
+   at normal speed, with captions that follow it. Video: /scrolly/desk.mp4 (phones: desk-m.mp4). */
 (function () {
-  var FRAMES = 119;
   var DIR = '/scrolly/desk/';
   var BOOK = 'https://calendly.com/mpinhas100/30min';
   var CAPS = [
@@ -11,11 +9,10 @@
     { at: 0.50, k: 'Our Solution:', h: 'AI picks up the busywork.', p: 'Calls answered and follow-ups sent.<br>Emails sorted and answered.<br>Admin and scheduling handled in the background.' },
     { at: 0.85, k: 'The result', h: 'Be <span class="ai">AI</span>-Ready.', p: 'Less busywork, more room to grow your business.', cta: true }
   ];
+  var PHONE = window.innerWidth <= 820;
   var reduce = false;
   try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
 
-  function pad(n) { return ('00' + n).slice(-3); }
-  function frameUrl(i, small) { return DIR + (small ? 'm-' : 'd-') + pad(i + 1) + '.webp'; }
 
   function build() {
     var sec = document.createElement('section');
@@ -30,33 +27,28 @@
     sec.innerHTML = '<div class="scrolly-pin"><div class="scrolly-grid">' +
       '<div class="scrolly-copy">' + caps +
       '<button type="button" class="btn btn-primary hq-open">Let\'s get you AI Ready!</button></div>' +
-      '<div class="scrolly-stage"><canvas width="1280" height="720" role="img" aria-label="A cluttered office desk is tidied up by a small glowing AI helper until it is calm and organized."></canvas>' +
+      '<div class="scrolly-stage"><video muted playsinline preload="auto" poster="' + DIR + (PHONE ? 'm-' : 'd-') + '001.webp" ' +
+      'aria-label="A cluttered office desk is tidied up by a small glowing AI helper until it is calm and organized.">' +
+      '<source src="/scrolly/' + (PHONE ? 'desk-m.mp4' : 'desk.mp4') + '" type="video/mp4"></video>' +
       '<div class="scrolly-bar" aria-hidden="true"><i></i></div></div>' +
       '</div></div>';
     return sec;
   }
 
   function wire(sec) {
+    // The video plays by itself at normal speed (no scroll control). The welcome message shows
+    // first, then the video plays once and the messages follow it; it stops on the calm desk.
     var small = window.innerWidth <= 820;
-    var canvas = sec.querySelector('canvas');
-    var ctx = canvas.getContext('2d');
     var full = !small && !reduce; // computers: full-screen, cropped to cover
-    function sizeCanvas() {
-      if (!full) { if (small) { canvas.width = 640; canvas.height = 360; } return; }
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      var w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
-      var k = Math.min(1, 2400 / Math.max(w, 1));
-      canvas.width = Math.max(1, Math.round(w * k)); canvas.height = Math.max(1, Math.round(h * k));
-    }
-    sizeCanvas();
-    var imgs = new Array(FRAMES), loaded = new Array(FRAMES);
+    var video = sec.querySelector('video');
     var capEls = sec.querySelectorAll('.scrolly-cap');
-    var pinEl = sec.querySelector('.scrolly-pin');
+    var bar = sec.querySelector('.scrolly-bar i');
+    var copy = sec.querySelector('.scrolly-copy');
+    var HOLD = 2500; // ms the welcome message stays before the video starts
     function fitCopy() {
-      // narrow screens: the pinned area is only as tall as the video plus the tallest message,
-      // so there's no empty space under it when the video ends
-      if (full || reduce) return;
-      var copy = sec.querySelector('.scrolly-copy'), tallest = 0;
+      // narrow screens: room for the tallest message, so the button doesn't jump
+      if (full) return;
+      var tallest = 0;
       copy.style.minHeight = '0';
       [].forEach.call(capEls, function (c) { tallest = Math.max(tallest, c.offsetHeight); });
       var btn = copy.querySelector('.hq-open');
@@ -65,143 +57,43 @@
     fitCopy();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCopy);
     window.addEventListener('load', fitCopy);
-    var bar = sec.querySelector('.scrolly-bar i');
-    var current = -1, started = false;
-
-    function load(i) {
-      if (imgs[i]) return;
-      var im = new Image();
-      im.decoding = 'async';
-      im.onload = function () { loaded[i] = true; if (i === want || current < 0) draw(); };
-      im.src = frameUrl(i, small);
-      imgs[i] = im;
-    }
-    function loadAll() {
-      if (started) return; started = true;
-      // load every 8th frame first so scrubbing works early, then fill in the rest
-      for (var s = 8; s >= 1; s = s >> 1) for (var i = 0; i < FRAMES; i += s) load(i);
-    }
-    var want = 0;
-    function nearestLoaded(i) {
-      for (var d = 0; d < FRAMES; d++) {
-        if (i - d >= 0 && loaded[i - d]) return i - d;
-        if (i + d < FRAMES && loaded[i + d]) return i + d;
-      }
-      return -1;
-    }
-    function draw() {
-      var f = nearestLoaded(want);
-      if (f < 0 || f === current) return;
-      current = f;
-      var im = imgs[f], cw = canvas.width, ch = canvas.height;
-      if (!full) { ctx.drawImage(im, 0, 0, cw, ch); return; }
-      var iw = im.naturalWidth, ih = im.naturalHeight, sc = Math.max(cw / iw, ch / ih);
-      var dw = iw * sc, dh = ih * sc;
-      ctx.drawImage(im, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-    }
-    function progress() {
-      var r = sec.getBoundingClientRect();
-      var total = sec.offsetHeight - pinEl.offsetHeight;
-      return Math.min(1, Math.max(0, -r.top / Math.max(1, total)));
-    }
+    window.addEventListener('resize', fitCopy);
     var capIndex = 0;
-    function update() {
-      var p = progress();
-      want = Math.min(FRAMES - 1, Math.round(p * (FRAMES - 1)));
-      draw();
-      bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
-      var ci = 0;
-      for (var i = 0; i < CAPS.length; i++) if (p >= CAPS[i].at) ci = i;
-      if (ci !== capIndex) {
-        capEls[capIndex].classList.remove('on');
-        capEls[ci].classList.add('on');
-        capIndex = ci;
-      }
+    function setCap(ci) {
+      if (ci === capIndex) return;
+      capEls[capIndex].classList.remove('on');
+      capEls[ci].classList.add('on');
+      capIndex = ci;
     }
-
+    function update() {
+      var d = video.duration || 8, p = Math.min(1, video.currentTime / d);
+      bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+      if (!started) return;
+      var ci = 1;
+      for (var i = 1; i < CAPS.length; i++) if (p >= CAPS[i].at) ci = i;
+      setCap(ci);
+    }
+    var started = false, ticking = false;
+    function loop() { update(); if (!video.paused && !video.ended) requestAnimationFrame(loop); else ticking = false; }
+    video.addEventListener('play', function () { if (!ticking) { ticking = true; requestAnimationFrame(loop); } });
+    video.addEventListener('ended', function () { setCap(CAPS.length - 1); bar.style.transform = 'scaleX(1)'; });
     if (reduce) {
-      // still picture of the calm desk with the final message
-      want = FRAMES - 1; load(FRAMES - 1);
-      capEls[0].classList.remove('on'); capEls[CAPS.length - 1].classList.add('on');
+      // reduce motion: no playback; show the calm desk with the welcome message
+      video.removeAttribute('autoplay');
+      video.addEventListener('loadedmetadata', function () { try { video.currentTime = video.duration - 0.05; } catch (e) {} });
       return;
     }
-    load(0);
-    var ticking = false;
-    function onScroll() {
-      if (ticking) return; ticking = true;
-      requestAnimationFrame(function () { ticking = false; update(); });
+    function start() {
+      setTimeout(function () {
+        started = true; setCap(1);
+        var pr = video.play();
+        if (pr && pr.catch) pr.catch(function () { started = false; setCap(0); }); // autoplay blocked: keep the welcome
+      }, HOLD);
     }
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) { if (es[0].isIntersecting) loadAll(); }, { rootMargin: '150% 0px' }).observe(sec);
-    } else { loadAll(); }
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    // Mouse wheel / trackpad: three scrolls play the whole video. Each scroll gesture glides
-    // the video to the next stop (1/3, 2/3, end) and shows that stop's message; extra wheel
-    // events from the same flick are ignored. After the end, the next scroll moves on to the page.
-    var STOPS = [0, 1 / 3, 2 / 3, 1];
-    var busy = false, lastWheel = 0, lastAbs = 0, lastStep = 0;
-    function range() {
-      var top = sec.getBoundingClientRect().top + window.scrollY - 68;
-      return [top, top + sec.offsetHeight - pinEl.offsetHeight];
-    }
-    function glide(from, to) {
-      busy = true;
-      var t0 = performance.now(), dur = 650;
-      (function step(now) {
-        var t = Math.min(1, (now - t0) / dur);
-        var e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; // ease in-out
-        window.scrollTo({ top: from + (to - from) * e, behavior: 'instant' });
-        if (t < 1) requestAnimationFrame(step); else busy = false;
-      })(t0);
-    }
-    sec.querySelector('.scrolly-pin').addEventListener('wheel', function (e) {
-      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || !e.deltaY) return;
-      var now = performance.now(), abs = Math.abs(e.deltaY);
-      // A new scroll is either a pause in wheel events, or (on trackpads, whose flicks keep
-      // "coasting" for a second or more) a sudden jump in speed while the coast is fading.
-      var fresh = now - lastWheel > 180 || (abs > lastAbs * 1.6 + 4 && now - lastStep > 450);
-      lastWheel = now; lastAbs = abs;
-      var down = e.deltaY > 0, r = range(), y = window.scrollY, span = Math.max(1, r[1] - r[0]);
-      if (y < r[0] - 2 || y > r[1] + 2) return; // not on the video
-      if (busy || !fresh) { e.preventDefault(); return; } // still the same flick, or still gliding
-      var p = (y - r[0]) / span, target = null;
-      if (down) { for (var i = 0; i < STOPS.length; i++) if (STOPS[i] > p + 0.02) { target = STOPS[i]; break; } }
-      else { for (var j = STOPS.length - 1; j >= 0; j--) if (STOPS[j] < p - 0.02) { target = STOPS[j]; break; } }
-      if (target === null) return; // at an end: a new scroll moves on to the page
-      e.preventDefault();
-      lastStep = now;
-      glide(y, r[0] + target * span);
-    }, { passive: false });
-    // Phones and tablets: one swipe moves the video to the next stop, so three swipes finish it
-    var pin = sec.querySelector('.scrolly-pin'), ty = null, tLock = false;
-    function nextStop(down) {
-      var r = range(), y = window.scrollY, span = Math.max(1, r[1] - r[0]);
-      if (y < r[0] - 2 || y > r[1] + 2) return null;
-      var p = (y - r[0]) / span;
-      if (down) { for (var i = 0; i < STOPS.length; i++) if (STOPS[i] > p + 0.02) return r[0] + STOPS[i] * span; }
-      else { for (var j = STOPS.length - 1; j >= 0; j--) if (STOPS[j] < p - 0.02) return r[0] + STOPS[j] * span; }
-      return null;
-    }
-    pin.addEventListener('touchstart', function (e) {
-      if (e.touches.length !== 1 || (e.target.closest && e.target.closest('button,a,input,textarea,label'))) { ty = null; return; }
-      ty = e.touches[0].clientY; tLock = false;
-    }, { passive: true });
-    pin.addEventListener('touchmove', function (e) {
-      if (ty === null) return;
-      var dy = ty - e.touches[0].clientY;
-      if (!tLock && Math.abs(dy) < 6) return;
-      if (busy || nextStop(dy > 0) !== null) { tLock = true; e.preventDefault(); } // stay on the video; the swipe picks the next stop
-    }, { passive: false });
-    pin.addEventListener('touchend', function (e) {
-      if (ty === null || !tLock) { ty = null; return; }
-      var dy = ty - e.changedTouches[0].clientY; ty = null;
-      if (busy || Math.abs(dy) < 30) return;
-      var to = nextStop(dy > 0);
-      if (to !== null) glide(window.scrollY, to);
-    }, { passive: true });
-    window.addEventListener('resize', function () { sizeCanvas(); fitCopy(); current = -1; onScroll(); });
-    update();
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); start(); } }, { threshold: 0.4 });
+      io.observe(sec);
+    } else start();
   }
 
   // ---------- "What do you need?" form (opens from the button under the video) ----------
