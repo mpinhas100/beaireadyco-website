@@ -8,9 +8,9 @@
   var CAPS = [
     { at: 0.00, hero: true },
     { at: 0.14, k: 'A normal day', h: 'Sound familiar?', p: 'Phones ringing. Notes everywhere. An inbox that never ends.' },
-    { at: 0.32, k: 'Step 1', h: 'AI picks up the busywork.', p: 'Calls answered, follow-ups sent, nothing forgotten.' },
-    { at: 0.50, k: 'Step 2', h: 'Your inbox, under control.', p: 'Emails sorted and answered, so you can focus on clients.' },
-    { at: 0.68, k: 'Step 3', h: 'Paperwork, handled.', p: 'Admin and scheduling run quietly in the background.' },
+    { at: 0.32, k: 'Our Solution:', h: 'AI picks up the busywork.', p: 'Calls answered, follow-ups sent, nothing forgotten.' },
+    { at: 0.50, k: 'Our Solution:', h: 'Your inbox, under control.', p: 'Emails sorted and answered, so you can focus on clients.' },
+    { at: 0.68, k: 'Our Solution:', h: 'Paperwork, handled.', p: 'Admin and scheduling run quietly in the background.' },
     { at: 0.86, k: 'The result', h: 'Be <span class="ai">AI</span>-Ready.', p: 'Less busywork, more room to grow your business.', cta: true }
   ];
   var reduce = false;
