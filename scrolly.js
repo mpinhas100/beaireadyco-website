@@ -126,14 +126,14 @@
     // the video to the next stop (1/3, 2/3, end) and shows that stop's message; extra wheel
     // events from the same flick are ignored. After the end, the next scroll moves on to the page.
     var STOPS = [0, 1 / 3, 2 / 3, 1];
-    var busy = false, lastWheel = 0;
+    var busy = false, lastWheel = 0, lastAbs = 0, lastStep = 0;
     function range() {
       var top = sec.getBoundingClientRect().top + window.scrollY - 68;
       return [top, top + sec.offsetHeight - (window.innerHeight - 68)];
     }
     function glide(from, to) {
       busy = true;
-      var t0 = performance.now(), dur = 850;
+      var t0 = performance.now(), dur = 650;
       (function step(now) {
         var t = Math.min(1, (now - t0) / dur);
         var e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; // ease in-out
@@ -143,8 +143,11 @@
     }
     sec.querySelector('.scrolly-pin').addEventListener('wheel', function (e) {
       if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || !e.deltaY) return;
-      var now = performance.now(), fresh = now - lastWheel > 220;
-      lastWheel = now;
+      var now = performance.now(), abs = Math.abs(e.deltaY);
+      // A new scroll is either a pause in wheel events, or (on trackpads, whose flicks keep
+      // "coasting" for a second or more) a sudden jump in speed while the coast is fading.
+      var fresh = now - lastWheel > 180 || (abs > lastAbs * 1.6 + 4 && now - lastStep > 450);
+      lastWheel = now; lastAbs = abs;
       var down = e.deltaY > 0, r = range(), y = window.scrollY, span = Math.max(1, r[1] - r[0]);
       if (y < r[0] - 2 || y > r[1] + 2) return; // not on the video
       if (busy || !fresh) { e.preventDefault(); return; } // still the same flick, or still gliding
@@ -153,6 +156,7 @@
       else { for (var j = STOPS.length - 1; j >= 0; j--) if (STOPS[j] < p - 0.02) { target = STOPS[j]; break; } }
       if (target === null) return; // at an end: a new scroll moves on to the page
       e.preventDefault();
+      lastStep = now;
       glide(y, r[0] + target * span);
     }, { passive: false });
     window.addEventListener('resize', function () { sizeCanvas(); current = -1; onScroll(); });
