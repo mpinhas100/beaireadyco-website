@@ -259,8 +259,67 @@ html.rv-on .rv.rv-in{opacity:1;transform:none;transition:opacity .55s cubic-bezi
       <span class="pf-body"><span class="pf-tag">Kitchens · Mexico</span><h2>Cocinas MC</h2><p>A Spanish-language site for MasterChef-branded kitchens, for builders, designers, restaurants and bars.</p><span class="pf-go">Visit site ↗</span></span>
     </a>
 </div></div></section>
+<style>
+.tk{padding:16px 0 72px}
+.tk-head{max-width:40rem;margin-bottom:26px}
+.tk-head .pill{margin-bottom:10px}
+.tk-win{border:1px solid #e4e6f0;border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 30px 70px -40px rgba(42,34,120,.45)}
+.tk-top{display:flex;align-items:center;gap:6px;height:36px;padding:0 14px;background:#f3f1fb;border-bottom:1px solid #e6e3f5}
+.tk-top i{width:9px;height:9px;border-radius:50%;background:#d6d3e8}
+.tk-top em{font-style:normal;font-size:12px;color:#6b6f88;margin-left:8px;background:#fff;border-radius:999px;padding:3px 12px}
+.tk-top b{margin-left:auto;font-size:11px;font-weight:600;color:#8a5a00;background:#fff4dd;border-radius:999px;padding:3px 10px}
+.tk-app{display:grid;grid-template-columns:200px 1fr;min-height:420px}
+.tk-side{background:#14301f;color:#dfeee3;padding:18px 12px;display:flex;flex-direction:column;gap:2px;font-size:13.5px}
+.tk-logo{font-weight:800;letter-spacing:.04em;font-size:16px;color:#fff;padding:4px 10px 14px}
+.tk-logo span{color:#ffb547}
+.tk-side a{color:inherit;text-decoration:none;padding:8px 10px;border-radius:9px;display:flex;justify-content:space-between}
+.tk-side a.on{background:rgba(255,255,255,.12);color:#fff;font-weight:600}
+.tk-side a small{background:#ffb547;color:#14301f;border-radius:999px;padding:0 7px;font-weight:700;font-size:11px;line-height:18px}
+.tk-main{padding:20px 22px;background:#fbfbfd;min-width:0}
+.tk-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.tk-stat{background:#fff;border:1px solid #eceef5;border-radius:12px;padding:10px 12px}
+.tk-stat b{display:block;font-size:20px;color:#141a33}
+.tk-stat span{font-size:12px;color:#6b6f88}
+.tk-table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid #eceef5;border-radius:12px;overflow:hidden}
+.tk-table th{text-align:left;font-weight:600;color:#6b6f88;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding:9px 12px;background:#f6f7fb}
+.tk-table td{padding:10px 12px;border-top:1px solid #f0f1f6;color:#232a48;white-space:nowrap}
+.tk-chip{display:inline-block;font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 9px}
+.c-new{background:#eef0ff;color:#3c32b8}.c-sent{background:#e8f4ff;color:#1765a8}.c-rep{background:#e6f6ec;color:#17713d}.c-fu{background:#fff4dd;color:#8a5a00}.c-ap{background:#fde8ef;color:#a3214f}
+.tk-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:26px;list-style:none;padding:0}
+.tk-steps li{background:#fff;border:1px solid #e4e6f0;border-radius:16px;padding:16px 18px}
+.tk-steps b{display:block;margin:6px 0 4px;color:#141a33}
+.tk-steps span{font-family:var(--mono,monospace);font-size:12px;color:#3c32b8}
+.tk-steps p{margin:0;color:var(--muted,#555b75);font-size:14.5px;line-height:1.5}
+.tk-note{font-size:13px;color:#6b6f88;margin-top:10px}
+@media (max-width:760px){.tk-app{grid-template-columns:1fr}.tk-side{flex-direction:row;overflow-x:auto;gap:4px;padding:10px}.tk-logo{padding:6px 10px}.tk-side a{white-space:nowrap}.tk-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.tk-wrapt{overflow-x:auto}}
+</style>
+<section class="tk"><div class="wrap">
+  <div class="tk-head"><span class="pill">Web app · Custom CRM</span>
+    <h2 class="h2">FRUPPIE Tracker</h2>
+    <p class="lede">A sales tracker built for FRUPPIE. It finds new clients, drafts the first emails and keeps every conversation up to date on its own.</p></div>
+  <div class="tk-win" role="img" aria-label="Example screen of the FRUPPIE Tracker with sample companies and their outreach status">
+    <div class="tk-top" aria-hidden="true"><i></i><i></i><i></i><em>FRUPPIE Tracker</em><b>Sample data</b></div>
+    <div class="tk-app" aria-hidden="true">
+      <nav class="tk-side"><div class="tk-logo">FRUPPIE<span>.</span></div>
+        <a class="on" href="#">Home</a><a href="#">Pending <small>3</small></a><a href="#">Clients</a><a href="#">Suppliers</a><a href="#">Daily summary</a><a href="#">Appointments</a><a href="#">New contacts <small>12</small></a></nav>
+      <div class="tk-main">
+        <div class="tk-stats"><div class="tk-stat"><b>12</b><span>New prospects today</span></div><div class="tk-stat"><b>3</b><span>Drafts to approve</span></div><div class="tk-stat"><b>5</b><span>Replies this week</span></div><div class="tk-stat"><b>2</b><span>Follow-ups due</span></div></div>
+        <div class="tk-wrapt"><table class="tk-table"><thead><tr><th>Company</th><th>Type</th><th>City</th><th>Status</th></tr></thead><tbody><tr><td><b>Café Aurora</b></td><td>Café</td><td>Guadalajara</td><td><span class="tk-chip c-new">New prospect</span></td></tr><tr><td><b>Hotel Mirador</b></td><td>Hotel</td><td>Cancún</td><td><span class="tk-chip c-ap">Draft to approve</span></td></tr><tr><td><b>Distribuidora Norte</b></td><td>Distributor</td><td>Monterrey</td><td><span class="tk-chip c-sent">Email sent</span></td></tr><tr><td><b>Bar La Terraza</b></td><td>Bar</td><td>CDMX</td><td><span class="tk-chip c-rep">Replied</span></td></tr><tr><td><b>Panadería Sol</b></td><td>Bakery</td><td>Puebla</td><td><span class="tk-chip c-fu">Follow-up due</span></td></tr></tbody></table></div>
+      </div>
+    </div>
+  </div>
+  <p class="tk-note">Example screen with made-up companies. The real Tracker holds private client data, so it isn't shown here.</p>
+  <ol class="tk-steps">
+    <li><span>01</span><b>Finds new prospects</b><p>Every day it searches public business listings for companies that fit, and adds them as new contacts.</p></li>
+    <li><span>02</span><b>Drafts the first email</b><p>AI writes a short first email for each one. The owner approves the drafts before anything is sent.</p></li>
+    <li><span>03</span><b>Sends within safe limits</b><p>Approved emails go out a few at a time each day, so the account isn't flagged as bulk mail.</p></li>
+    <li><span>04</span><b>Reads the replies</b><p>Gmail is connected, so replies update each company's status on their own.</p></li>
+    <li><span>05</span><b>Keeps you on top of it</b><p>Follow-ups due, a daily summary and upcoming appointments, all in one place.</p></li>
+  </ol>
+</div></section>
+
 <section class="tint"><div class="wrap" style="text-align:center">
-  <h2 class="h2">Want a site like these?</h2>
+  <h2 class="h2">Want something like this?</h2>
   <p class="lede" style="margin:10px auto 20px">Tell us about your business and we'll plan it with you.</p>
   <div class="ctas" style="justify-content:center"><a class="btn btn-p" href="https://calendly.com/mpinhas100/30min" target="_blank" rel="noopener">Book a free call</a><a class="btn btn-g" href="/websites/">Website design</a></div>
 </div></section>
