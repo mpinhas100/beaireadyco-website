@@ -30,9 +30,8 @@
         (c.cta ? '<a class="btn btn-primary" href="' + BOOK + '" target="_blank" rel="noopener">Book a free consultation</a>' : '') +
         '</div>';
     }).join('');
-    var dots = CAPS.map(function (_, i) { return '<span' + (i === 0 ? ' class="on"' : '') + '></span>'; }).join('');
     sec.innerHTML = '<div class="scrolly-pin"><div class="scrolly-grid">' +
-      '<div class="scrolly-copy">' + caps + '<div class="scrolly-dots" aria-hidden="true">' + dots + '</div></div>' +
+      '<div class="scrolly-copy">' + caps + '</div>' +
       '<div class="scrolly-stage"><canvas width="1280" height="720" role="img" aria-label="A cluttered office desk is tidied up by a small glowing AI helper until it is calm and organized."></canvas>' +
       '<div class="scrolly-bar" aria-hidden="true"><i></i></div></div>' +
       '</div></div>';
@@ -54,7 +53,6 @@
     sizeCanvas();
     var imgs = new Array(FRAMES), loaded = new Array(FRAMES);
     var capEls = sec.querySelectorAll('.scrolly-cap');
-    var dotEls = sec.querySelectorAll('.scrolly-dots span');
     var bar = sec.querySelector('.scrolly-bar i');
     var current = -1, started = false;
 
@@ -103,8 +101,8 @@
       var ci = 0;
       for (var i = 0; i < CAPS.length; i++) if (p >= CAPS[i].at) ci = i;
       if (ci !== capIndex) {
-        capEls[capIndex].classList.remove('on'); dotEls[capIndex].classList.remove('on');
-        capEls[ci].classList.add('on'); dotEls[ci].classList.add('on');
+        capEls[capIndex].classList.remove('on');
+        capEls[ci].classList.add('on');
         capIndex = ci;
       }
     }
@@ -125,6 +123,32 @@
       new IntersectionObserver(function (es) { if (es[0].isIntersecting) loadAll(); }, { rootMargin: '150% 0px' }).observe(sec);
     } else { loadAll(); }
     window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Mouse wheel / trackpad over the video: the video plays at a steady pace and the page
+    // stays on it until the video reaches its end (or its start, scrolling up). A fast flick
+    // can't skip past it; after the end, a new scroll gesture moves on to the rest of the page.
+    var stage = full ? sec.querySelector('.scrolly-pin') : sec.querySelector('.scrolly-stage');
+    var hold = 0, holdTimer = 0, STEP = 45; // px of page scroll per wheel event, at most
+    function range() {
+      var top = sec.getBoundingClientRect().top + window.scrollY - 68;
+      return [top, top + sec.offsetHeight - (window.innerHeight - 68)];
+    }
+    stage.addEventListener('wheel', function (e) {
+      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // pinch-zoom or sideways
+      var d = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
+      if (!d) return;
+      var r = range(), y = window.scrollY, inside = y >= r[0] - 2 && y <= r[1] + 2;
+      clearTimeout(holdTimer);
+      holdTimer = setTimeout(function () { hold = 0; }, 320);
+      if (hold && (hold > 0) === (d > 0)) { e.preventDefault(); return; } // same gesture hit an end: wait
+      if (!inside) return;
+      var atEnd = d > 0 ? y >= r[1] - 1 : y <= r[0] + 1;
+      if (atEnd) return; // fresh gesture at an end: let the page move on
+      e.preventDefault();
+      var next = Math.min(r[1], Math.max(r[0], y + Math.max(-STEP, Math.min(STEP, d))));
+      window.scrollTo({ top: next, behavior: 'instant' });
+      if (next >= r[1] - 1 || next <= r[0] + 1) hold = d > 0 ? 1 : -1;
+    }, { passive: false });
     window.addEventListener('resize', function () { sizeCanvas(); current = -1; onScroll(); });
     update();
   }
