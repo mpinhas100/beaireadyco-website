@@ -232,7 +232,7 @@
     // a button under the video that opens the 3-question form in a window
     var band = document.createElement('section');
     band.className = 'hq-band';
-    band.innerHTML = '<div class="wrap"><div class="hq-band-in"><h2>Tell us what you need</h2>' +
+    band.innerHTML = '<div class="wrap"><div class="hq-band-in"><h2>Let\'s get you AI Ready!</h2>' +
       '<p>Answer three quick questions and we\'ll get back to you.</p>' +
       '<button type="button" class="btn btn-primary hq-open">Book a free consultation</button></div></div>' +
       '<dialog class="hq-dlg" aria-labelledby="hq-title"><div class="hq-dlg-head"><h2 id="hq-title">Tell us what you need</h2>' +
