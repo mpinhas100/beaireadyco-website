@@ -82,3 +82,52 @@
 .scrolly{height:260vh}
 @media (max-width:820px){.scrolly{height:220vh}}
 @media (prefers-reduced-motion:reduce){.scrolly{height:auto}}
+
+/* Home "what do you need?" form inside the welcome card */
+.hq{margin-top:18px;display:grid;gap:10px}
+.hq-step{display:none;gap:10px}
+.hq-step.on{display:grid}
+.scrolly-cap .hq-q,.hq-q{font-family:var(--display);font-weight:700;font-size:1.05rem;color:#141a33;margin:0}
+.hq-chips{display:flex;flex-wrap:wrap;gap:6px}
+.hq-chips label{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;font-weight:600;color:#232a48;padding:6px 11px;border:1.5px solid rgba(20,26,51,.16);border-radius:999px;background:rgba(255,255,255,.85);cursor:pointer;transition:border-color .15s,background-color .15s}
+.hq-chips input{margin:0;width:15px;height:15px;accent-color:#4a3fd6}
+.hq-chips label:has(input:checked){border-color:#4a3fd6;background:#ebe9ff;color:#2a2190}
+.hq-chips label:has(input:focus-visible){outline:2px solid #4a3fd6;outline-offset:2px}
+.hq-l{font-size:.85rem;font-weight:650;color:#232a48;margin-bottom:-4px}
+.hq-l span{font-weight:500;color:#5a6180}
+.hq input:not([type=checkbox]),.hq textarea{font:inherit;font-size:16px;width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid rgba(20,26,51,.18);background:#fff;color:#141a33}
+.hq textarea{resize:vertical;min-height:84px}
+.hq input:focus,.hq textarea:focus{outline:none;border-color:#4a3fd6;box-shadow:0 0 0 3px rgba(74,63,214,.2)}
+.hq-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+.hq-nav .btn{background:#4a3fd6;color:#fff;margin-left:auto}
+.hq-back{background:none;border:0;font:inherit;font-size:.9rem;font-weight:600;color:#3c32b8;cursor:pointer;padding:8px 4px}
+.hq-step-n{margin:0;font-size:.75rem;color:#5a6180;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.hq-msg{margin:0;font-size:.88rem;font-weight:600}
+.hq-msg:empty{display:none}
+.hq-msg.err{color:#b3261e}
+.hq-done{margin:0;font-size:1rem;color:#141a33;line-height:1.5;padding:14px 16px;border-radius:12px;background:#e8f6ee}
+.hq-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+.hq-send[disabled]{opacity:.6;cursor:wait}
+/* the form takes the card's room: keep the welcome text short and put "See what we do" as a quiet link */
+.scrolly-hero .lede{display:none}
+.scrolly-hero .ctas{margin-top:6px}
+.scrolly-hero .ctas .btn-ghost{background:none;border:0;padding:6px 0;min-height:0;color:#3c32b8;text-decoration:underline;text-underline-offset:3px;font-size:.92rem}
+@media (min-width:821px) and (prefers-reduced-motion:no-preference){
+  .scrolly-copy{max-height:calc(100% - 2*clamp(20px,4vh,44px));overflow:auto;overscroll-behavior:contain}
+  .scrolly-hero .bai-logo.bai-hero{max-width:400px}
+}
+@media (max-width:820px){ .scrolly-hero .ctas .btn{flex:0 0 auto} }
+
+.hq{gap:8px}
+.hq-step-n{order:-1}
+.hq-nav{margin-top:2px}
+.hq-nav .btn{padding:10px 20px}
+.scrolly-hero .ctas{margin-top:4px}
+/* phones: welcome + form as a normal section above the video */
+.hero.hq-hero{padding:22px 0 8px}
+.hero.hq-hero .wrap{display:block}
+.hero.hq-hero .lede{display:none}
+.hero.hq-hero .ctas{margin-top:6px}
+.hero.hq-hero .ctas .btn-ghost{background:none;border:0;padding:6px 0;min-height:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:.92rem}
+.hero.hq-hero .hq-q,.hero.hq-hero .hq-l,.hero.hq-hero .hq-chips label{color:var(--ink)}
+.hero.hq-hero .hq-chips label{background:var(--surface)}
