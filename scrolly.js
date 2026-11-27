@@ -51,6 +51,20 @@
     sizeCanvas();
     var imgs = new Array(FRAMES), loaded = new Array(FRAMES);
     var capEls = sec.querySelectorAll('.scrolly-cap');
+    var pinEl = sec.querySelector('.scrolly-pin');
+    function fitCopy() {
+      // narrow screens: the pinned area is only as tall as the video plus the tallest message,
+      // so there's no empty space under it when the video ends
+      if (full || reduce) return;
+      var copy = sec.querySelector('.scrolly-copy'), tallest = 0;
+      copy.style.minHeight = '0';
+      [].forEach.call(capEls, function (c) { tallest = Math.max(tallest, c.offsetHeight); });
+      var btn = copy.querySelector('.hq-open');
+      copy.style.minHeight = (tallest + (btn ? btn.offsetHeight + 20 : 0)) + 'px';
+    }
+    fitCopy();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCopy);
+    window.addEventListener('load', fitCopy);
     var bar = sec.querySelector('.scrolly-bar i');
     var current = -1, started = false;
 
@@ -87,7 +101,7 @@
     }
     function progress() {
       var r = sec.getBoundingClientRect();
-      var total = sec.offsetHeight - (window.innerHeight - 68);
+      var total = sec.offsetHeight - pinEl.offsetHeight;
       return Math.min(1, Math.max(0, -r.top / Math.max(1, total)));
     }
     var capIndex = 0;
@@ -129,7 +143,7 @@
     var busy = false, lastWheel = 0, lastAbs = 0, lastStep = 0;
     function range() {
       var top = sec.getBoundingClientRect().top + window.scrollY - 68;
-      return [top, top + sec.offsetHeight - (window.innerHeight - 68)];
+      return [top, top + sec.offsetHeight - pinEl.offsetHeight];
     }
     function glide(from, to) {
       busy = true;
@@ -186,7 +200,7 @@
       var to = nextStop(dy > 0);
       if (to !== null) glide(window.scrollY, to);
     }, { passive: true });
-    window.addEventListener('resize', function () { sizeCanvas(); current = -1; onScroll(); });
+    window.addEventListener('resize', function () { sizeCanvas(); fitCopy(); current = -1; onScroll(); });
     update();
   }
 

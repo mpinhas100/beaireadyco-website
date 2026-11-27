@@ -129,3 +129,9 @@
 .hq-dlg .hq-q{color:#141a33;margin:0}
 .hq-dlg p{margin:0}
 .scrolly-copy > .hq-open{margin-top:20px;position:relative;z-index:1}
+/* narrow screens: pinned area fits its content (no empty space under the last message) */
+@media (max-width:820px) and (prefers-reduced-motion:no-preference){
+  .scrolly-pin{height:auto;padding-bottom:20px}
+  .scrolly-copy{min-height:0}
+  .scrolly-copy > .hq-open{margin-top:18px}
+}
